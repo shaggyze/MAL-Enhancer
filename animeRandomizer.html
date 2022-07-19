@@ -1,0 +1,71 @@
+<div id="animeRandomizer" style="display:none;">
+    <h1>Anime Roulette</h1>
+    <span class="closeMe"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+    <div style="display:none;" class="randomizerOptions">
+        <div class="col-4">
+            <h2>Watch Status?</h2>
+            <p><input type="checkbox" id="anime-random-watching" /><label for="anime-random-watching">Currently Watching</label></p>
+            <p><input type="checkbox" id="anime-random-completed" /><label for="anime-random-completed">Completed Anime</label></p>
+            <p><input type="checkbox" id="anime-random-onhold" /><label for="anime-random-onhold">On Hold</label></p>
+            <p><input type="checkbox" id="anime-random-dropped" /><label for="anime-random-dropped">Dropped</label></p>
+            <p><input checked type="checkbox" id="anime-random-plantowatch" /><label for="anime-random-plantowatch">Plan To Watch</label></p>
+        </div>
+        <div class="col-4">
+            <h2>Anime Status?</h2>
+
+            <p><input type="checkbox" id="anime-random-airing" /><label for="anime-random-airing">Currently Airing</label></p>
+            <p><input checked type="checkbox" id="anime-random-finishedairing" /><label for="anime-random-finishedairing">Finished Airing</label></p>
+            <p><input type="checkbox" id="anime-random-notyetairing" /><label for="anime-random-notyetairing">Not Yet Airing</label></p>
+        </div>
+        <div class="col-4">
+            <h2>What type of anime?</h2>
+
+            <p><input checked type="checkbox" id="anime-random-tv" /><label for="anime-random-tv">TV</label></p>
+            <p><input type="checkbox" id="anime-random-movie" /><label for="anime-random-movie">Movie</label></p>
+            <p><input type="checkbox" id="anime-random-special" /><label for="anime-random-special">Special</label></p>
+            <p><input type="checkbox" id="anime-random-ova" /><label for="anime-random-ova">OVA</label></p>
+        </div>
+        <div class="col-4">
+            <h2>Episodes:</h2>
+            <p><input style="width:50px; margin-right:5px;" value="0" min="0" type="number" id="anime-random-maxepisodes" /><label>Maximum Amount of episodes (set to "0" for any amount)</label></p>
+            <p><input style="width:50px; margin-right:5px;" value="0" min="0" type="number" id="anime-random-minepisodes" /><label>Minimum Amount of episodes (set to "0" for any amount)</label></p>
+        </div>
+        <div class="theResult">
+            <p>The current configuration includes <b id="anime-random-finalcount">N/A</b> animes</p>
+            <button id="buildRoulette">GO!</button>
+        </div>
+    </div>
+    <div style="display:block;" class="randomizerRoulette">
+        <h2>Welcome to the anime roulette!</h2>
+        <p>Ever had the trouble of deciding what anime to watch next? You've come to the right place.</p>
+        <p><b>By default:</b> This roulette contains all your anime that falls into the category of 'plan-to-watch', 'finished airing' and 'TV Series'. This can be customized by pressing here: <a id="customRoulettePlease">Customize Roulette</a></p>
+        
+        <div class="theRoulette" >
+            <ul class="slider anim" id="appendRoulette">
+
+            </ul>
+        </div>
+        <div class="roulettecursor"></div>
+        <button id="spinRoulette">Start the roulette!</button>
+        <div id="rouletteResult">
+            <p style="text-align:center;" id="rouletteAnimeTitle"></p>
+            <table>
+                <tr>
+                    <td id="rouletteAnimeEpisodes"></td>
+                    <td id="rouletteAnimeRating"></td>
+                    <td id="rouletteAnimeAired"></td>
+                </tr>
+                
+            </table>
+            <table>
+                <tr id="resultButtons">
+                    <td style="display:none; width:50%;" id="rouletteViewMAL"><button>View MAL Page</button></td>
+                    <td style="display:none; width:50%;" id="restartRoulette"><button>Spin Again</button></td>
+
+                </tr>
+            </table>
+        </div>
+        
+        
+    </div>
+</div>

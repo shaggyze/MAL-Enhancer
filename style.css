@@ -1,0 +1,482 @@
+.editorButton {
+    font-size: 11px;
+    line-height: 1;
+}
+
+.prompterButton {
+    font-size: 11px;
+    line-height: 1;
+}
+
+#bbCodeEditor {
+    margin-bottom: 6px;
+}
+
+#bbCodeEditor fieldset{
+    display:inline;
+}
+
+.theRoulette{
+    width:100%;
+    height:136px;
+    display: block;
+    overflow:hidden;
+    position: relative;
+    margin-bottom: 11px;
+}
+
+
+#rouletteResult {
+    font-size: 0px;
+    text-align: center;
+}
+
+
+
+#rouletteResult table {
+    font-size: 0px;
+    width: 100%;
+    color:black!important;
+}
+
+
+
+
+#rouletteResult td {
+    width: 33.33%;
+    text-align:center;
+    margin: 0 auto;
+}
+
+.slider {
+    display: block;
+    text-transform: inherit;
+    width: 48000px;
+    height: 136px;
+    margin: 0px 0px 0px 0px;
+    padding: 0px;
+    
+}
+
+.anim {
+    transition: 10s cubic-bezier(0.040, 0.620, 0.250, 1.000);
+    
+}
+
+table#dialog{
+    min-width:690px!important;
+}
+table#dialog textarea[name="msg_text"]{
+    width:645px!important;
+}
+#quickReply{
+    min-width:600px!important;
+}
+
+.slider li{
+    display:inline;
+    height:136px;
+    text-transform:inherit;
+}
+
+.roulettecursor {
+    width:1px;
+    background: red;
+    height:136px;
+    display:block;
+    margin: 0 auto;
+    position: absolute;
+    left:50%;
+    padding: 0;
+    margin-top: -147px;
+}
+
+#animeRandomizer {
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    background: white;
+    display: block;
+    top: -510%;
+    transition: 1s ease;
+    width: 780px;
+    max-width: 80%;
+    height: auto;
+    min-height: 460px;
+    max-height: 98%;
+    overflow: auto;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px;
+    z-index: 99999;
+}
+
+#animeRandomizer a{
+    cursor:pointer;
+}
+
+#animeRandomizer h1 {
+    color: black;
+    display: inline-block;
+    font-size: 2em;
+    margin-top: 0.67em;
+    margin-bottom: 0.67em;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
+    text-align: center;
+}
+
+#animeRandomizer h2 {
+    color:black;
+    text-align:left;
+    display: block;
+    font-size: 1.5em;
+    margin-bottom: 0.83em;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
+}
+
+#animeRandomizer p {
+    text-align: left;
+    display: block;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: 0;
+    margin-right: 0;
+    color:black;
+}
+
+.col-4 {
+    width: 25%;
+    float: left;
+}
+
+#animeRandomizer .theResult{
+    float:right;
+    margin-top:10px;
+}
+
+#animeRandomizer .theResult button {
+    font-size:2em;
+}
+
+#animeRandomizer .theResult p{
+    display:inline-block;
+}
+
+#animeRandomizer .closeMe {
+    float: right;
+    display: inline-block;
+    cursor: pointer;
+    font-size: 2em;
+    color: black;
+}
+
+
+.MAL-ENCH-randombadge {
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    background: white;
+    border-radius: 100%;
+    width: 70px;
+    height: 70px;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    transition: linear 1s;
+}
+
+.MAL-ENCH-randombadge:hover {
+    transition: linear 1s;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.16), 0 30px 60px rgba(0,0,0,0.23);
+}
+
+.MAL-ENCH-randombadge i {
+    font-size: 50px;
+    color: black;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.MAL-ENCH-messagebackup {
+    display: inline;
+    float: right;
+    font-size: 10px;
+}
+.MAL-ENCH-messagebackup i{
+    vertical-align: middle;
+}
+
+.MAL-ENCH-backupmessagetruncate{
+    text-overflow: ellipsis;
+    max-width: 40vw;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.MAL-ENCH-messagestats{
+    border: 2px solid black;
+    margin: 0 auto;
+    display: none;
+    text-align: center;
+    font-weight: initial;
+    
+}
+
+
+
+.outerFlex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.prompter {
+    padding: 2px;
+    border: 2px solid black;
+    z-index: 9999999;
+    background: white;
+    position: absolute;
+}
+
+.innerFlex {
+    min-width: 200px;
+    min-height: 100px;
+    background: white;
+    position: relative;
+    max-height: 90%;
+    padding: 5px;
+    overflow: auto;
+}
+
+.flexContainer, .flexContainerHistory {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    background: rgba(0, 0, 0, 0.26);
+    z-index:100;
+}
+
+.gitgraph-tooltip{
+    z-index:101;
+}
+
+.noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+
+.spin {
+    -webkit-animation-name: spin;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+    -moz-animation-name: spin;
+    -moz-animation-duration: 2s;
+    -moz-animation-iteration-count: infinite;
+    -moz-animation-timing-function: linear;
+    -ms-animation-name: spin;
+    -ms-animation-duration: 2s;
+    -ms-animation-iteration-count: infinite;
+    -ms-animation-timing-function: linear;
+}
+
+
+@-webkit-keyframes spin {
+    from {
+        -webkit-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    to {
+        -webkit-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+
+
+.innerFlex table {
+    border-collapse: collapse;
+    border-spacing: 0px;
+}
+
+#animesearchhelper{
+    background: #dedede;
+    border: 2px solid black;
+    padding:6px;
+    max-width:420px;
+    margin: 0 auto;
+    display:none;
+}
+
+#animesearcher {
+    margin-top: -12px;
+}
+
+.dialog-text > .lightLink{
+    display: inline;
+}
+
+.dialog-text > .MAL-ENCH-BBCODEHAPSER {
+    float: right;
+    display: inline;
+    font-size: 9px;
+}
+
+
+.MAL-ENCH-message{
+    min-height: 215px;
+    text-align: left;
+}
+
+.MAL-ENCH-infopanel{
+    text-align:center;
+    max-width: 30%;
+    margin: 0px 10px 10px 10px;
+
+}
+.MAL-ENCH-infopanel img{
+    margin: 0 auto;
+    max-height: 150px;
+}
+
+.MAL-ENCH-infopanel strong{
+    font-size: 18px;
+}
+
+.spoiler_content{
+    border: 1px dashed black;
+    border-radius: 5px;
+}
+
+.helptoggle{
+    cursor:pointer;
+    position: absolute;
+    right:2px;
+    top: 2px;
+}
+
+.innerFlex table img {
+    height:36px;
+}
+
+.innerFlex .animeselected {
+    background: green;
+    color: white;
+    cursor: pointer;
+}
+
+.innerFlex p {
+    display:inline;
+}
+
+
+
+.animeLoadSpinner{
+    font-size:36px;
+}
+
+.innerFlex th {
+    border: 1px solid #cecece;
+    padding: 2px 7px 2px 7px;
+}
+
+.innerFlex tr, .innerFlex td, .innerFlex thead, .innerFlex tbody, .innerFlex tfoot {
+    border: 1px solid #cecece;
+}
+
+.innerFlex td {
+    padding: 2px 7px 2px 7px;
+}
+
+.innerFlex .table-zebra tr:nth-child(even) {
+    background: #dddddd;
+}
+
+.innerFlex .table-zebra tr {
+    background: none;
+}
+
+/* Icon box */
+
+.icon-box {
+    width: 267px;
+    height: 267px;
+    max-width: 100%;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(0,0,0,.15);
+    position: absolute;
+    z-index: 9999994;
+    top: 0px;
+    left: 0px;
+    display: none;
+}
+
+.icon-box .icon-box-content {
+    height: 217px;
+    width: 100%;
+}
+
+.icon-box .icon-box-header {
+    height: 50px;
+    padding: 10px 10px;
+    -webkit-box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.22);
+    -moz-box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.22);
+    box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.22);
+    position: relative;
+    z-index: 2;
+}
+
+.icon-box .icon-box-content i {
+    width: 25%;
+    height: 54.5px;
+    line-height: 54.5px;
+    text-align: center;
+    display: block;
+    float: left;
+    color: #757575;
+    font-size: 26px;
+    cursor: pointer;
+}
+
+.icon-box .icon-box-header input[type="search"] {
+    height: 100%;
+    border-radius: 99px;
+    box-shadow: none;
+    background: #eee;
+    border: 1px solid #e2e2e2;
+    padding: 0px 7px;
+    color: #757575;
+    float: right;
+    width: 190px;
+}
+
+.icon-box .icon-box-header p {
+    position: absolute;
+    line-height: 50px;
+    top: 0;
+    font-size: 14px;
+    color: #757575;
+    margin-left: 7px;
+}
+
+.icon-box .icon-box-content i:hover {
+    background: #ddd;
+}
