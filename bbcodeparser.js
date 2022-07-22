@@ -26,7 +26,7 @@ String.fromHtmlEntities = function(string) {
         return String.fromCharCode(s.match(/\d+/gm)[0]);
     })
 };
-var debugParsing = false;
+var debugParsing = true;
 var running = 0;
 function removeTags(htmlData){
     var obj = $("<malench>" + htmlData + "</malench>").children();
@@ -99,9 +99,9 @@ function removeTags(htmlData){
         if(workWith.prop("tagName") == "DIV"){ //More or less everything else
 			console.log(workWith.html())
             if(workWith.hasClass("quotetext")){ //quotes
-                var replaceWith = "[quote]" + workWith.html() + "[/quote]";
-                htmlData = htmlData.replaceAll(obj[0].innerHTML, replaceWith);
-                removeTags(htmlData);
+				var replaceWith = "[quote]" + workWith.first().html() + "[/quote]";
+				htmlData = htmlData.replaceAll(obj[0].outerHTML, replaceWith);
+				removeTags(htmlData);
             }else if(workWith.hasClass("spoiler")){ //Spoiler
                 var content = workWith.find(".spoiler_content").first().html();
                 var name = workWith.find("input").first().attr("data-showname").substr(5);
@@ -143,12 +143,12 @@ function removeTags(htmlData){
         htmlData = htmlData.replaceAll(obj[0].outerHTML, "");
         removeTags(htmlData);
         return;
-    }else{
+    } else {
         console.log("I'M DONE PARSING!!!!");
         htmlData = $('<textarea />').html(htmlData).text().trim(); //Convert entitys back
         //console.log(htmlData);
         
-        var w = window.open('', "", "scrollbars=yes,width=800,height=450");
+        var w = window.open('', "", "scrollbars=yes,width=680,height=320");
         $(w.document.head).append("<title>PARSING RESULT ~ MAL ENHANCER ~</title><style>body{padding:5px;}</style>");
         $(w.document.body).append("<h1>Parsing result:</h1>");
         $(w.document.body).append("<textarea rows='15' cols='90'>"+htmlData+"</textarea>");

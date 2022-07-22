@@ -339,6 +339,11 @@ table#dialog textarea[name="msg_text"]{
     font-size: 9px;
 }
 
+.MAL-ENCH-BBCODESIG {
+    display: inline;
+    font-size: 9px;
+	width: 150px;
+}
 
 .MAL-ENCH-message{
     min-height: 215px;

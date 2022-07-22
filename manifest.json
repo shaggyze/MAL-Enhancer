@@ -27,7 +27,7 @@
    "permissions": [ "declarativeContent", "storage" ],
    "short_name": "MALENCH",
    "update_url": "https://clients2.google.com/service/update2/crx",
-   "version": "1.2",
+   "version": "1.6",
    "web_accessible_resources": [
     {
       "resources": [ "emoji/*.json", "*.png", "style.css", "bbcodehelper.html", "animeRandomizer.html" ],

@@ -125,7 +125,7 @@ $(document).ready(function () {
             if (data.animeRoulette == "true" || data.animeRoulette == undefined) {
 
                 downloadAllAnimeData(user);
-                $.get(chrome.runtime.getURL("animeRandomizer.html"), function (data) {
+                $.get(browser.runtime.getURL("animeRandomizer.html"), function (data) {
                     $("body").append(data);
                     $(".randomizerOptions input").unbind().change(function () {
                         getAnimePosibilities();
@@ -648,7 +648,7 @@ function enableBBCodeHelper(textboxSelector, callback) {
                     console.error("Could not find text area!");
                     return;
                 } else {
-                    $.get(chrome.runtime.getURL("bbcodehelper.html"), function (data) {
+                    $.get(browser.runtime.getURL("bbcodehelper.html"), function (data) {
                         messageTextArea.before(data);
                         if (animefinder) {
                             $("#animesearcher").show();
@@ -1154,7 +1154,7 @@ function enableMessageBeautifier() {
 
 				$(w.document.head).append('<link rel="stylesheet" href="https://valeriolyndon.github.io/MAL-Public-List-Designs/resources/font-awesome-4.7.0/css/font-awesome-force-legacy.min.css">');
                 //Include Custom Stylesheet
-                $(w.document.head).append('<link rel="stylesheet" type="text/CSS" href="' + chrome.runtime.getURL("style.css") + '">');
+                $(w.document.head).append('<link rel="stylesheet" type="text/CSS" href="' + browser.runtime.getURL("style.css") + '">');
                 //$(w.document.body).html($("#MAL-ENCH-messagepanel").html());
                 $(w.document.body).html(parent.html());
                 $(w.document.body).addClass("page-common");

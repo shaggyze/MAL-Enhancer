@@ -16,9 +16,14 @@ $(document).on('click','.editorButton',function () {
             case "insertlink": askFor("URL:", "url", this, "[url=%s]", "[/url]", "wrapText"); break;
             case "insertyoutube": askFor("Youtube Link OR ID:", "url", this, "[yt]%s[/yt]", "nada", "insertText"); break;
             case "insertImage": askFor("Image Url:", "url", this, "[img]%s[/img]", "nada", "insertText"); break;
+			case "insertImageLeft": askFor("Image Url:", "url", this, "[img align=left]%s[/img]", "nada", "insertText"); break;
+			case "insertImageRight": askFor("Image Url:", "url", this, "[img align=right]%s[/img]", "nada", "insertText"); break;
             case "code": wrapText("[code]", "[/code]"); break;
             case "quote": wrapText("[quote]", "[/quote]"); break;
             case "spoiler": askFor("Spoiler Name:", "text", this, "[spoiler=\"%s\"]", "[/spoiler]", "wrapText"); break;
+			case "list": wrapText("[list][*]", "[/list]"); break;
+			case "list=1": wrapText("[list=1][*]", "[/list]"); break;
+			case "*": wrapText("[*]", ""); break;
 
 		}
 

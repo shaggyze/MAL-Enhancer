@@ -14,7 +14,7 @@
             text-align:center;
         }
         i{
-            font-size: 12px;
+            font-size: 11px;
         }
 
     </style>
@@ -30,8 +30,17 @@
             </tr>
         </thead>
         <tbody>
+		    <tr>
+                <td>BBCode Parser<br /><i>Copy any about me (classic), message, club description, or signature to BBCode.</i></td>
+                <td>
+                    <!--<select id="bbcodeparser">
+                        <option value="true">Enabled</option>
+                        <option value="false">Disabled</option>
+                    </select>-->
+                </td>
+            </tr>
             <tr>
-                <td>Enable BBCode Helper<br /><i>Enables a editor while writing a message, forum post, blog post or editing your profile</i></td>
+                <td>Enable BBCode Helper<br /><i>Enables an editor while writing a message, forum post, blog post, club description, or editing your profile.</i></td>
                 <td>
                     <select id="bbcodehelper">
                         <option value="true">Enabled</option>
@@ -58,7 +67,7 @@
                 </td>
             </tr>
             <tr>
-                <td>Enable Animefinder<br /><i>Press CTRL+ENTER while writing a message, forum post, blog post or editing your profile</i></td>
+                <td>Enable Anime Finder<br /><i>Press CTRL+ENTER while writing a message, forum post, blog post, or editing your profile</i></td>
                 <td>
                     <select id="animefinder">
                         <option value="true">Enabled</option>
@@ -67,7 +76,7 @@
                 </td>
             </tr>
             <tr>
-                <td>Enable Improved Anime History<br /><i>Shows a branching timeline of the animes you've watched. (Find it on a profile under 'history')</i></td>
+                <td>Enable Improved Anime History (*incomplete)<br /><i>Shows a branching timeline of the animes you've watched. (Find it on a profile under 'history')</i></td>
                 <td>
                     <select id="improvedhistory">
                         <option value="true">Enabled</option>
@@ -76,7 +85,7 @@
                 </td>
             </tr>
             <tr>
-                <td>Enable the Anime Roulette on animelists<br /><i>Wether to hide the anime roulette on animelists</i></td>
+                <td>Enable the Anime Roulette on animelists<br /><i>Show the anime roulette on animelists</i></td>
                 <td>
                     <select id="animeRoulette">
                         <option value="true">Enabled</option>
@@ -85,7 +94,7 @@
                 </td>
             </tr>
             <tr>
-                <td>Enable custom CSS on animelists/mangalists<br /><i>Disabeling this will force every animelist/mangalist to use the default style</i></td>
+                <td>Enable custom CSS on animelists/mangalists<br /><i>Disabling this will force every animelist/mangalist to use the default style</i></td>
                 <td>
                     <select id="customCSS">
                         <option value="true">Enabled</option>
@@ -97,7 +106,7 @@
             <tr id="currentShowingAnimelist" style="display:none;">
                 <td>Blacklist <b id="currentShowingAnimelistOwner"></b>'s custom css?<br /><i>Press the button in order to toggle this users custom css</i></td>
                 <td>
-                    <button id="toggleUserCSS" onclick="blacklistUser(this);"></button>
+                    <button id="toggleUserCSS"></button>
                 </td>
             </tr>
         </tbody>

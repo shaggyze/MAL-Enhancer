@@ -1,4 +1,3 @@
-
 $("select").change(function () {
     saveSettings();
 });
@@ -92,11 +91,11 @@ $(document).ready(function () {
         var url = tab.url;
 
 
-        if (tab.url.indexOf("animelist/") == -1) {
+        if (tab.url.indexOf("list/") == -1) {
             return;
         }
         try {
-            var animelist = tab.url.substr(tab.url.indexOf("animelist/") + 10).split("?")[0].trim();
+            var animelist = tab.url.substr(tab.url.indexOf("list/") + 5).split("?")[0].trim();
             //console.log(animelist);
             $("#currentShowingAnimelistOwner").text(animelist);
             $("#currentShowingAnimelist").show();
