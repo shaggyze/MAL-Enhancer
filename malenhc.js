@@ -55,8 +55,20 @@ var currentAnimelist = null;
 var animelistLayoutIsOld = null;
 var animelistLayoutIsNew = null;
 var animeData = [];
+
 //Choose if should be enabled
 $(document).ready(function () {
+	if (!document.cookie.match(new RegExp("(^| )view=pc([^;]+)"))); {
+		document.cookie = 'view=pc;path=/;Expires=' + new Date(new Date().getTime()+1000*60*60*24*365).toGMTString() + ';';
+		let isMobileDevice = window.matchMedia("only screen and (max-width: 1025px)").matches;
+		if (isMobileDevice) {
+			location.reload();
+		} else {
+			//alert("This is not a mobile device.");
+		}
+	}
+
+	delfooter();
     if (window.location.pathname == "/mymessages.php" && window.location.search.contains("go=send")) {
         console.info("[MAL Enhancer] Writing a message. Enabeling BBCode helper");
         enableAnimeFinder("textarea[name='message']");
@@ -93,7 +105,7 @@ $(document).ready(function () {
         enableBBCodeHelper("#quickReply #messageText");
 		enableBBCodeSig();
     } else if (window.location.pathname == "/clubs.php" && window.location.search.startsWith("?cid=") || window.location.search.startsWith("?action=create")) {
-        console.info("[MAL Enhancer] Creating a club! Enabeling BBCode helper");
+        console.info("[MAL Enhancer] Creating a club! Enabeling Anime Finder & BBCode Helper");
         enableAnimeFinder("textarea[name='club_description']");
         enableBBCodeHelper("textarea[name='club_description']");
 		enableBBCodeClub();
@@ -102,7 +114,7 @@ $(document).ready(function () {
         }, 500);
 		
     } else if (window.location.pathname.startsWith("/profile/")) {
-        console.info("[MAL Enhancer] Looking at a profile page! Enabeling BBCode helper");
+        console.info("[MAL Enhancer] Looking at a profile page! Enabeling Anime Finder, BBCode Helper & Improved History");
         enableAnimeFinder("textarea[name='commentText']");
         enableBBCodeHelper("textarea[name='commentText']");
         enableImprovedHistory();
@@ -110,14 +122,12 @@ $(document).ready(function () {
         if ($(".word-break").html() !== undefined) {
             $("#contentWrapper .h1").append("<button class='MAL-ENCH-getProfileBBCode' style='display:inline; float:right; font-size:9px;'>Parse profile-text to BBCode</button>")
         }
-
-    } else if (window.location.pathname.startsWith("/animelist/")) {
-        var user = window.location.pathname.substr(11).split("?")[0].trim();
-        console.info("[MAL Enhancer] Viewing " + user + "'s animelist.");
-        currentAnimelist = user;
     } else if (window.location.pathname.startsWith("/mangalist/")) {
         var user = window.location.pathname.substr(11).split("?")[0].trim();
         console.info("[MAL Enhancer] Viewing " + user + "'s mangalist.");
+    } else if (window.location.pathname.startsWith("/animelist/")) {
+        var user = window.location.pathname.substr(11).split("?")[0].trim();
+        console.info("[MAL Enhancer] Viewing " + user + "'s animelist.");
         currentAnimelist = user;
 
         //if (animelistLayoutIsOld == false) {
@@ -136,15 +146,15 @@ $(document).ready(function () {
         //}
 
 
-
-
-
-
     } else {
         console.info("[MAL Enhancer] Unknown page! Extension disables!");
         return false;
     }
 
+});
+
+$(window).load(function () {
+	delterms();
 });
 
 function downloadAllAnimeData(user, offset) {
@@ -664,7 +674,7 @@ function enableBBCodeHelper(textboxSelector, callback) {
                         });
                     });
 
-                    console.info("[MAL Enhancer] BBCodeHelper enabled!");
+                    console.info("[MAL Enhancer] BBCode Helper enabled!");
                     if (callback !== undefined) {
                         callback();
                     }
@@ -844,9 +854,9 @@ var graph = null;
 function enableImprovedHistory() {
     chrome.storage.sync.get("improvedhistory", function (data) {
         if (data.improvedhistory == "true" || data.improvedhistory == undefined) {
-
+            console.info("[MAL Enhancer] Improved History enabled!");
             //$(".stats.anime").find("h5").wrapInner('<p style="display: inline;"></p>');
-            $("div.updates.anime.pl0.pr8").append('<a style="float:right;cursor:pointer;" class="MAL-ENCH-openImprovedHistory"><span class="user-status-title di-ib">Improved History</span></a></li>');
+            $("div.updates.anime").append('<a style="float:right;cursor:pointer;" class="MAL-ENCH-openImprovedHistory"><span class="user-status-title di-ib">Improved History</span></a></li>');
             $(".MAL-ENCH-openImprovedHistory").click(function () {
 
                 if ($(".flexContainerHistory").length == 0) {
@@ -930,7 +940,9 @@ function enableImprovedHistory() {
                 }
 
             });
-        }
+        } else {
+			console.info("[MAL Enhancer] Improved History disabled in config.");
+		}
     });
 }
 
@@ -1250,4 +1262,39 @@ function resetKnownNames() {
         console.log("Reset all known names.");
     });
 
+}
+
+function delterms() {
+  chrome.storage.sync.get("terms", function (data) {
+	if (!document.cookie.match(new RegExp("(^| )m_gdpr_mdl_6=1([^;]+)"))); {
+	  document.cookie = 'm_gdpr_mdl_6=1;Expires=' + new Date(new Date().getTime()+1000*60*60*24*365).toGMTString() + ';';
+	}
+    if (data.terms == "true" || data.terms == undefined) {
+      let modal = document.querySelector(".root");
+      if (modal) {
+        modal.parentNode.removeChild(modal);
+      }
+	  let recaptcha = document.getElementById("recaptcha-terms");
+      if (recaptcha) {
+        recaptcha.parentNode.removeChild(recaptcha);
+      }
+	  let gdpr = document.getElementById("gdpr-modal-bottom");
+      if (gdpr) {
+        gdpr.parentNode.removeChild(gdpr);
+      }
+	  let gdprad = document.getElementById("gdpr-modal-ad");
+      if (gdprad) {
+        gdprad.parentNode.removeChild(gdprad);
+      }
+	}
+  });
+}
+
+function delfooter() {
+  chrome.storage.sync.get("footer", function (data) {
+    if (data.footer == "true" || data.footer == undefined) {
+      let footer = document.getElementById("footer-block");
+      footer.parentNode.removeChild(footer);
+    }
+  });
 }

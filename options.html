@@ -13,6 +13,9 @@
             margin-top:0px;
             text-align:center;
         }
+		td{
+		    font-size: 13px;
+		}
         i{
             font-size: 11px;
         }
@@ -30,6 +33,15 @@
             </tr>
         </thead>
         <tbody>
+			<tr>
+                <td>Force PC Desktop Mode<br /><i>Higher resolution than the default desktop mode on mobile devices.</i></td>
+                <td>
+                    <!--<select id="bbcodeparser">
+                        <option value="true">Enabled</option>
+                        <option value="false">Disabled</option>
+                    </select>-->
+                </td>
+            </tr>
 		    <tr>
                 <td>BBCode Parser<br /><i>Copy any about me (classic), message, club description, or signature to BBCode.</i></td>
                 <td>
@@ -67,7 +79,7 @@
                 </td>
             </tr>
             <tr>
-                <td>Enable Anime Finder<br /><i>Press CTRL+ENTER while writing a message, forum post, blog post, or editing your profile</i></td>
+                <td>Enable Anime Finder<br /><i>Press CTRL+ENTER while writing a message, forum post, blog post, or editing your profile.</i></td>
                 <td>
                     <select id="animefinder">
                         <option value="true">Enabled</option>
@@ -85,7 +97,7 @@
                 </td>
             </tr>
             <tr>
-                <td>Enable the Anime Roulette on animelists<br /><i>Show the anime roulette on animelists</i></td>
+                <td>Enable the Anime Roulette on animelists<br /><i>Show the anime roulette on animelists.</i></td>
                 <td>
                     <select id="animeRoulette">
                         <option value="true">Enabled</option>
@@ -94,7 +106,7 @@
                 </td>
             </tr>
             <tr>
-                <td>Enable custom CSS on animelists/mangalists<br /><i>Disabling this will force every animelist/mangalist to use the default style</i></td>
+                <td>Enable custom CSS on animelists/mangalists<br /><i>Disabling this will force every animelist/mangalist to use the default style.</i></td>
                 <td>
                     <select id="customCSS">
                         <option value="true">Enabled</option>
@@ -102,17 +114,34 @@
                     </select>
                 </td>
             </tr>
-
             <tr id="currentShowingAnimelist" style="display:none;">
-                <td>Blacklist <b id="currentShowingAnimelistOwner"></b>'s custom css?<br /><i>Press the button in order to toggle this users custom css</i></td>
+                <td>Blacklist <b id="currentShowingAnimelistOwner"></b>'s custom css?<br /><i>Press the button in order to toggle this users custom css.</i></td>
                 <td>
                     <button id="toggleUserCSS"></button>
+                </td>
+            </tr>
+			<tr>
+                <td>Disable Privacy Policy<br /><i>Removes Privacy Policy popup.</i></td>
+                <td>
+                    <select id="terms">
+                        <option value="true">Enabled</option>
+                        <option value="false">Disabled</option>
+                    </select>
+                </td>
+            </tr>
+			<tr>
+				<td>Disable Footer<br /><i>Removes Footer from bottom of page.</i></td>
+                <td>
+                    <select id="footer">
+                        <option value="true">Enabled</option>
+                        <option value="false">Disabled</option>
+                    </select>
                 </td>
             </tr>
         </tbody>
     </table>
     <p id="notifier"> </p>
-    <script src="jquery.js"></script>
+	<script src="jquery.js"></script>
     <script src="options.js"></script>
 </body>
 </html>

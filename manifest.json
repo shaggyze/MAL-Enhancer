@@ -1,36 +1,31 @@
 {
    "author": "Alexander N & ShaggyZE",
-   "background": {
-    "service_worker": "background.js"
-   },
+   "name": "MAL Enhancer",
+   "short_name": "MALENHC",
+   "description": "Enhances MAL for a better user experience. Suggestions are welcome!",
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "2.2",
+   "manifest_version": 3,
+   "host_permissions": [ "*://*.myanimelist.net/*" ],
+   "permissions": [ "declarativeContent", "storage" ],
+   "background": { "service_worker": "background.js" },
    "content_scripts": [ {
       "css": [ "style.css", "gitgraph.css" ],
-      "exclude_matches": [ "*://myanimelist.net/login*", "*://myanimelist.net/register*", "*://myanimelist.net/editprofile.php?go=myoptions" ],
-      "js": [ "jquery.js", "gitgraph.min.js", "malench.js", "bbcodehelper.js", "bbcodeparser.js" ],
-      "matches": [ "https://myanimelist.net/*" ]
+      "js": [ "jquery.js", "malenhc.js", "bbcodehelper.js", "bbcodeparser.js", "gitgraph.min.js" ],
+      "matches": [ "https://myanimelist.net/*" ],
+	  "run_at":    "document_start"
    } ],
-   "description": "Enhances MAL for a better user experience. Suggestions are welcome!",
    "icons": {
       "128": "logo128.png",
       "16": "logo16.png",
       "48": "logo48.png"
    },
-   "manifest_version": 3,
-   "name": "MAL Enhancer",
    "action": {
       "default_popup": "options.html",
       "default_title": "MAL Enhancer Options"
    },
-   "host_permissions": [
-    "*://*.myanimelist.net/*"
-   ],
-   "permissions": [ "declarativeContent", "storage" ],
-   "short_name": "MALENCH",
-   "update_url": "https://clients2.google.com/service/update2/crx",
-   "version": "1.6",
-   "web_accessible_resources": [
-    {
-      "resources": [ "emoji/*.json", "*.png", "style.css", "bbcodehelper.html", "animeRandomizer.html" ],
-      "matches": [ "https://myanimelist.net/*" ]
-    }]
+   "web_accessible_resources": [ {
+       "resources": [ "emoji/*.json", "*.png", "style.css", "bbcodehelper.html", "animeRandomizer.html" ],
+       "matches": [ "https://myanimelist.net/*" ]
+    } ]
 }

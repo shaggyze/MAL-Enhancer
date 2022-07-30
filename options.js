@@ -14,7 +14,9 @@ function saveSettings() {
     var messageBeautifier = $("select#messageBeautifier").val();
     var messageDrafts = $("select#messageDrafts").val();
     var improvedhistory = $("select#improvedhistory").val();
-    chrome.storage.sync.set({ "bbcodehelper": bbcodehelper, "animefinder": animefinder, "improvedhistory": improvedhistory, "customCSS": customCSS, "animeRoulette": animeRoulette, "messageBeautifier": messageBeautifier, "messageDrafts": messageDrafts}, function () {
+	var footer = $("select#footer").val();
+	var terms = $("select#terms").val();
+    chrome.storage.sync.set({ "bbcodehelper": bbcodehelper, "animefinder": animefinder, "improvedhistory": improvedhistory, "customCSS": customCSS, "animeRoulette": animeRoulette, "messageBeautifier": messageBeautifier, "messageDrafts": messageDrafts, "footer": footer, "terms": terms}, function () {
         var d = new Date();
         $("#notifier").text("Saved Settings!").css("color", "green");
         $("#notifier").stop().show().delay(500).fadeOut(3000);
