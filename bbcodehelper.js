@@ -34,8 +34,8 @@ $(document).on('click','.editorButton',function () {
 
 
 function askFor(something, withType, onWhat, then, after, doWhat) {
-    var whereX = $(onWhat).position().left.toFixed(0);
-    var whereY = ($(onWhat).position().top + $(onWhat).height()+10).toFixed(0);
+    var whereX = $(onWhat).offset().left;
+    var whereY = $(onWhat).offset().top - 100;
     $("#MAL-ENCH-removeMeSoonPls").remove();
     setTimeout(function () {
         var value = "";

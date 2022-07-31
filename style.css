@@ -239,20 +239,26 @@ table#dialog textarea[name="msg_text"]{
 
 .prompter {
     padding: 2px;
-    border: 2px solid black;
+    border: 2px solid #7994bc !important;
     z-index: 9999999;
-    background: white;
+    background: #2a2a2a;
+	color: #ffffff;
     position: absolute;
 }
 
 .innerFlex {
     min-width: 200px;
     min-height: 100px;
-    background: white;
+    background: #555555;
+	color: white;
     position: relative;
     max-height: 90%;
     padding: 5px;
     overflow: auto;
+}
+
+a.helptoggle {
+	color: white !important:
 }
 
 .flexContainer, .flexContainerHistory {
@@ -317,7 +323,7 @@ table#dialog textarea[name="msg_text"]{
 }
 
 #animesearchhelper{
-    background: #dedede;
+    background: #333333;
     border: 2px solid black;
     padding:6px;
     max-width:420px;
@@ -370,7 +376,7 @@ table#dialog textarea[name="msg_text"]{
     border-radius: 5px;
 }
 
-.helptoggle{
+.helptoggle {
     cursor:pointer;
     position: absolute;
     right:2px;
@@ -382,7 +388,7 @@ table#dialog textarea[name="msg_text"]{
 }
 
 .innerFlex .animeselected {
-    background: green;
+    background: #7994bc !important;
     color: white;
     cursor: pointer;
 }

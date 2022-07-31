@@ -58,14 +58,9 @@ var animeData = [];
 
 //Choose if should be enabled
 $(document).ready(function () {
-	if (!document.cookie.match(new RegExp("(^| )view=pc([^;]+)"))); {
-		document.cookie = 'view=pc;path=/;Expires=' + new Date(new Date().getTime()+1000*60*60*24*365).toGMTString() + ';';
-		let isMobileDevice = window.matchMedia("only screen and (max-width: 1025px)").matches;
-		if (isMobileDevice) {
-			location.reload();
-		} else {
-			//alert("This is not a mobile device.");
-		}
+	document.cookie = 'view=pc;path=/;Expires=' + new Date(new Date().getTime()+1000*60*60*24*365).toGMTString() + ';';
+	if (document.querySelector('.footer-desktop-button') !== null) {
+		location.reload();
 	}
 
 	delfooter();
@@ -1267,7 +1262,7 @@ function resetKnownNames() {
 function delterms() {
   chrome.storage.sync.get("terms", function (data) {
 	if (!document.cookie.match(new RegExp("(^| )m_gdpr_mdl_6=1([^;]+)"))); {
-	  document.cookie = 'm_gdpr_mdl_6=1;Expires=' + new Date(new Date().getTime()+1000*60*60*24*365).toGMTString() + ';';
+	  document.cookie = 'm_gdpr_mdl_6=1;path=/;Expires=' + new Date(new Date().getTime()+1000*60*60*24*365).toGMTString() + ';';
 	}
     if (data.terms == "true" || data.terms == undefined) {
       let modal = document.querySelector(".root");
