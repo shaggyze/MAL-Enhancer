@@ -11,7 +11,7 @@
    "background": { "service_worker": "background.js" },
    "content_scripts": [ {
       "css": [ "style.css", "gitgraph.css" ],
-      "js": [ "jquery.min.js", "malenhc.js", "bbcodehelper.js", "bbcodeparser.js", "gitgraph.min.js" ],
+      "js": [ "jquery.js", "malenhc.js", "bbcodehelper.js", "bbcodeparser.js", "gitgraph.min.js" ],
       "matches": [ "https://myanimelist.net/*" ],
 	  "run_at":    "document_start"
    } ],

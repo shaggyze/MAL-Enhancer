@@ -58,12 +58,14 @@ var animeData = [];
 
 //Choose if should be enabled
 $(document).ready(function () {
-	document.cookie = 'view=pc;path=/;Expires=' + new Date(new Date().getTime()+1000*60*60*24*365).toGMTString() + ';';
 	if (document.querySelector('.footer-desktop-button') !== null) {
+		document.cookie = 'view=pc;path=/;Expires=' + new Date(new Date().getTime()+1000*60*60*24*365).toGMTString() + ';';
 		location.reload();
 	}
 
+	console.info("[MAL Enhancer] Enabeling Disable Footer");
 	delfooter();
+
     if (window.location.pathname == "/mymessages.php" && window.location.search.contains("go=send")) {
         console.info("[MAL Enhancer] Writing a message. Enabeling BBCode helper");
         enableAnimeFinder("textarea[name='message']");
@@ -149,6 +151,7 @@ $(document).ready(function () {
 });
 
 $(window).load(function () {
+	console.info("[MAL Enhancer] Enabeling Disable Privacy Policy");
 	delterms();
 });
 
@@ -1261,10 +1264,11 @@ function resetKnownNames() {
 
 function delterms() {
   chrome.storage.sync.get("terms", function (data) {
-	if (!document.cookie.match(new RegExp("(^| )m_gdpr_mdl_6=1([^;]+)"))); {
-	  document.cookie = 'm_gdpr_mdl_6=1;path=/;Expires=' + new Date(new Date().getTime()+1000*60*60*24*365).toGMTString() + ';';
-	}
     if (data.terms == "true" || data.terms == undefined) {
+		console.info("[MAL Enhancer] Disable Privacy Policy enabled!");
+		if (!document.cookie.match(new RegExp("(^| )m_gdpr_mdl_6=1([^;]+)"))); {
+			document.cookie = 'm_gdpr_mdl_6=1;path=/;Expires=' + new Date(new Date().getTime()+1000*60*60*24*365).toGMTString() + ';';
+		}
       let modal = document.querySelector(".root");
       if (modal) {
         modal.parentNode.removeChild(modal);
@@ -1281,15 +1285,20 @@ function delterms() {
       if (gdprad) {
         gdprad.parentNode.removeChild(gdprad);
       }
+	} else {
+		console.info("[MAL Enhancer] Disable Privacy Policy disabled in config.");
 	}
   });
 }
 
 function delfooter() {
   chrome.storage.sync.get("footer", function (data) {
-    if (data.footer == "true" || data.footer == undefined) {
-      let footer = document.getElementById("footer-block");
-      footer.parentNode.removeChild(footer);
-    }
+	if (data.footer == "true" || data.footer == undefined) {
+		console.info("[MAL Enhancer] Disable Footer enabled!");
+		let footer = document.getElementById("footer-block");
+		footer.parentNode.removeChild(footer);
+	} else {
+		console.info("[MAL Enhancer] Disable Footer disabled in config.");
+	}
   });
 }
