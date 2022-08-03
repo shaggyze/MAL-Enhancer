@@ -1,7 +1,7 @@
-function parseBBCode(htmlCode) {
+function exportBBCode(htmlCode) {
 
     var output = htmlCode;
-    //Parse all the easy stuff
+    //Export all the easy stuff
     output = output.replaceAll("<br>", "");
     output = output.replaceAll("<br/>", "");
     output = output.replaceAll("<br />", "");
@@ -36,7 +36,7 @@ function removeTags(htmlData){
         var w = window.open('', "", "scrollbars=yes,width=800,height=450");
         $(w.document.head).append("<title>PARSING RESULT ~ MAL ENHANCER ~</title><style>body{padding:5px;}</style>");
         $(w.document.body).append("<h1>Parsing failed:</h1>");
-        $(w.document.body).append("<textarea rows='15' cols='90'>The message was either too long (more than 1000 tags), or contained unsolveable HTML. Please report this, along with the message you tried to parse, to the developer!</textarea>");
+        $(w.document.body).append("<textarea rows='15' cols='90'>The message was either too long (more than 1000 tags), or contained unsolveable HTML. Please report this, along with the message you tried to export, to the developer!</textarea>");
         return;
     }
     

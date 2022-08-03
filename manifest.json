@@ -4,14 +4,14 @@
    "short_name": "MALENHC",
    "description": "Enhances MAL for a better user experience. Suggestions are welcome!",
    "update_url": "https://clients2.google.com/service/update2/crx",
-   "version": "2.3",
+   "version": "2.4",
    "manifest_version": 3,
    "host_permissions": [ "*://*.myanimelist.net/*" ],
    "permissions": [ "declarativeContent", "storage" ],
    "background": { "service_worker": "background.js" },
    "content_scripts": [ {
       "css": [ "style.css", "gitgraph.css" ],
-      "js": [ "jquery.js", "malenhc.js", "bbcodehelper.js", "bbcodeparser.js", "gitgraph.min.js" ],
+      "js": [ "jquery.js", "malenhc.js", "bbcodehelper.js", "bbcodeexporter.js", "gitgraph.min.js" ],
       "matches": [ "https://myanimelist.net/*" ],
 	  "run_at":    "document_start"
    } ],
@@ -25,7 +25,7 @@
       "default_title": "MAL Enhancer Options"
    },
    "web_accessible_resources": [ {
-       "resources": [ "emoji/*.json", "*.png", "style.css", "bbcodehelper.html", "animeRandomizer.html" ],
+       "resources": [ "emoji/*.json", "*.png", "style.css", "bbcodehelper.html", "animeRandomizer.html", "mangaRandomizer.html" ],
        "matches": [ "https://myanimelist.net/*" ]
     } ]
 }

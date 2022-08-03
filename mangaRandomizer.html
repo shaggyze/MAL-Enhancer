@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://valeriolyndon.github.io/MAL-Public-List-Designs/resources/font-awesome-4.7.0/css/font-awesome-force-legacy.min.css">
+</head>
+<body>
+<div id="animeRandomizer" style="display:none;">
+    <h1>Manga Roulette</h1>
+    <span class="closeMe"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+    <div style="display:none;" class="randomizerOptions">
+        <div class="col-4">
+            <h2>Read Status?</h2>
+            <p><input type="checkbox" id="manga-random-reading" /><label for="manga-random-reading">Currently Reading</label></p>
+            <p><input type="checkbox" id="manga-random-completed" /><label for="manga-random-completed">Completed Manga</label></p>
+            <p><input type="checkbox" id="manga-random-onhold" /><label for="manga-random-onhold">On Hold</label></p>
+            <p><input type="checkbox" id="manga-random-dropped" /><label for="manga-random-dropped">Dropped</label></p>
+            <p><input checked type="checkbox" id="manga-random-plantoread" /><label for="manga-random-plantoread">Plan To Read</label></p>
+        </div>
+        <div class="col-4">
+            <h2>Manga Status?</h2>
+
+            <p><input type="checkbox" id="manga-random-publishing" /><label for="manga-random-publishing">Publishing</label></p>
+            <p><input checked type="checkbox" id="manga-random-finished" /><label for="manga-random-finished">Finished</label></p>
+            <p><input type="checkbox" id="manga-random-notyetpublished" /><label for="manga-random-notyetpublished">Not yet published</label></p>
+			<p><input type="checkbox" id="manga-random-onhiatus" /><label for="manga-random-onhiatus">On Hiatus</label></p>
+            <p><input type="checkbox" id="manga-random-discontinued" /><label for="manga-random-discontinued">Discontinued</label></p>
+        </div>
+        <div class="col-4">
+            <h2>What type of manga?</h2>
+
+            <p><input checked type="checkbox" id="manga-random-manga" /><label for="manga-random-manga">Manga</label></p>
+            <p><input type="checkbox" id="manga-random-one-shot" /><label for="manga-random-one-shot">One-shot</label></p>
+            <p><input type="checkbox" id="manga-random-doujinshi" /><label for="manga-random-doujinshi">Doujinshi</label></p>
+			<p><input type="checkbox" id="manga-random-lightnovel" /><label for="manga-random-lightnovel">Light Novel</label></p>
+            <p><input type="checkbox" id="manga-random-novel" /><label for="manga-random-novel">Novel</label></p>
+			<p><input type="checkbox" id="manga-random-manhwa" /><label for="manga-random-manhwa">Manhwa</label></p>
+			<p><input type="checkbox" id="manga-random-manhua" /><label for="manga-random-manhua">Manhua</label></p>
+        </div>
+		 <div class="col-4">
+            <h2>Chapters:</h2>
+            <p><input style="width:50px; margin-right:5px;" value="0" min="0" type="number" id="manga-random-maxchapters" /><label>Maximum Amount of chapters (set to "0" for any amount)</label></p>
+            <p><input style="width:50px; margin-right:5px;" value="0" min="0" type="number" id="manga-random-minchapters" /><label>Minimum Amount of chapters (set to "0" for any amount)</label></p>
+        </div>
+        <div class="col-4">
+            <h2>Volumes:</h2>
+            <p><input style="width:50px; margin-right:5px;" value="0" min="0" type="number" id="manga-random-maxvolumes" /><label>Maximum Amount of volumes (set to "0" for any amount)</label></p>
+            <p><input style="width:50px; margin-right:5px;" value="0" min="0" type="number" id="manga-random-minvolumes" /><label>Minimum Amount of volumes (set to "0" for any amount)</label></p>
+        </div>
+        <div class="theResult">
+            <p>The current configuration includes <b id="manga-random-finalcount">N/A</b> mangas</p>
+            <button id="buildRoulette">GO!</button>
+        </div>
+    </div>
+    <div style="display:block;" class="randomizerRoulette">
+        <h2>Welcome to the manga roulette!</h2>
+        <p>Ever had the trouble of deciding what manga to read next? You've come to the right place.</p>
+        <p><b>By default:</b> This roulette contains all your manga that falls into the category of 'plan-to-read', 'finished' and 'Manga'. This can be customized by pressing here: <a id="customRoulettePlease">Customize Roulette</a></p>
+        
+        <div class="theRoulette" >
+            <ul class="slider anim" id="appendRoulette">
+
+            </ul>
+        </div>
+        <div class="roulettecursor"></div>
+        <button id="spinRoulette">Start the roulette!</button>
+        <div id="rouletteResult">
+            <p style="text-align:center;" id="rouletteMangaTitle"></p>
+            <table>
+                <tr>
+				    <td id="rouletteMangaChapters"></td>
+                    <td id="rouletteMangaVolumes"></td>
+                    <td id="rouletteMangaRating"></td>
+                    <td id="rouletteMangaPublished"></td>
+                </tr>
+                
+            </table>
+            <table>
+                <tr id="resultButtons">
+                    <td style="display:none; width:50%;" id="rouletteViewMAL"><button>View MAL Page</button></td>
+                    <td style="display:none; width:50%;" id="restartRoulette"><button>Spin Again</button></td>
+
+                </tr>
+            </table>
+        </div>
+        
+        
+    </div>
+</div>

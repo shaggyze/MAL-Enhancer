@@ -55,6 +55,7 @@ var currentAnimelist = null;
 var animelistLayoutIsOld = null;
 var animelistLayoutIsNew = null;
 var animeData = [];
+var rouletteType = "anime";
 
 //Choose if should be enabled
 $(document).ready(function () {
@@ -117,16 +118,31 @@ $(document).ready(function () {
         enableImprovedHistory();
         //First decide if profile actually has content.
         if ($(".word-break").html() !== undefined) {
-            $("#contentWrapper .h1").append("<button class='MAL-ENCH-getProfileBBCode' style='display:inline; float:right; font-size:9px;'>Parse profile-text to BBCode</button>")
+            $("#contentWrapper .h1").append("<button class='MAL-ENCH-getProfileBBCode' style='display:inline; float:right; font-size:9px;'>Extract profile-text to BBCode</button>")
         }
     } else if (window.location.pathname.startsWith("/mangalist/")) {
         var user = window.location.pathname.substr(11).split("?")[0].trim();
         console.info("[MAL Enhancer] Viewing " + user + "'s mangalist.");
+		currentAnimelist = user;
+		rouletteType = "manga";
+        //if (animelistLayoutIsOld == false) {
+        chrome.storage.sync.get("animeRoulette", function (data) {
+            if (data.animeRoulette == "true" || data.animeRoulette == undefined) {
+
+                downloadAllAnimeData(user);
+                $.get(chrome.runtime.getURL("mangaRandomizer.html"), function (data) {
+                    $("body").append(data);
+                    $(".randomizerOptions input").unbind().change(function () {
+                        getAnimePosibilities();
+                    });
+                });
+            }
+        });
     } else if (window.location.pathname.startsWith("/animelist/")) {
         var user = window.location.pathname.substr(11).split("?")[0].trim();
         console.info("[MAL Enhancer] Viewing " + user + "'s animelist.");
         currentAnimelist = user;
-
+		rouletteType = "anime";
         //if (animelistLayoutIsOld == false) {
         chrome.storage.sync.get("animeRoulette", function (data) {
             if (data.animeRoulette == "true" || data.animeRoulette == undefined) {
@@ -159,6 +175,7 @@ function downloadAllAnimeData(user, offset) {
     if (offset === undefined) {
         offset = 0;
     };
+	if (rouletteType === "anime") {
     $.get("https://myanimelist.net/animelist/" + user + "/load.json?offset=" + offset + "&status=7", function (data) {
         if (data !== null) {
             animeData = animeData.concat(data);
@@ -169,6 +186,18 @@ function downloadAllAnimeData(user, offset) {
             $("body").append("<div title='Anime Roulette' class='MAL-ENCH-randombadge'><i class='fa fa-random' aria-hidden='true'></i></div>");
         }
     });
+	} else {
+	$.get("https://myanimelist.net/mangalist/" + user + "/load.json?offset=" + offset + "&status=7", function (data) {
+        if (data !== null) {
+            animeData = animeData.concat(data);
+        }
+        if (data.length == 300) {
+            downloadAllAnimeData(user, offset + 300);
+        } else {
+            $("body").append("<div title='Manga Roulette' class='MAL-ENCH-randombadge'><i class='fa fa-random' aria-hidden='true'></i></div>");
+        }
+    });
+	}
 }
 
 
@@ -386,6 +415,7 @@ function closeRandomizer() {
 
 
 function getAnimePosibilities() {
+if (rouletteType == "anime") {
     if (animeData === null || animeData.length < 1) {
         console.error("Can't randomize! No anime data!!");
         return false;
@@ -549,6 +579,259 @@ function getAnimePosibilities() {
         $("#buildRoulette").removeAttr("disabled", "disabled");
     }
     return animes;
+} else {
+	console.log(animeData);
+	if (animeData === null || animeData.length < 1) {
+        console.error("Can't randomize! No manga data!!");
+        return false;
+    }
+
+    var reading = $("#manga-random-reading").prop("checked");
+    var completed = $("#manga-random-completed").prop("checked");
+    var onhold = $("#manga-random-onhold").prop("checked");
+    var dropped = $("#manga-random-dropped").prop("checked");
+    var plantoread = $("#manga-random-plantoread").prop("checked");
+    var publishing = $("#manga-random-publishing").prop("checked");
+    var finished = $("#manga-random-finished").prop("checked");
+    var notyetpublished = $("#manga-random-notyetpublished").prop("checked");
+	var onhiatus = $("#manga-random-onhiatus").prop("checked");
+	var discontinued = $("#manga-random-discontinued").prop("checked");
+
+    var manga = $("#manga-random-manga").prop("checked");
+	var oneshot = $("#manga-random-one-shot").prop("checked");
+	var doujinshi = $("#manga-random-doujinshi").prop("checked");
+    var lightnovel = $("#manga-random-lightnovel").prop("checked");
+	var novel = $("#manga-random-novel").prop("checked");
+	var manhwa = $("#manga-random-manhwa").prop("checked");
+    var manhua = $("#manga-random-manhua").prop("checked");
+	
+	var minChapters = $("#manga-random-minchapters").val();
+    var maxChapters = $("#manga-random-maxchapters").val();
+    if ((minChapters > maxChapters) && maxChapters != 0) {
+        alert("The minimum amount of chapters can't be bigger than the maximum amount of chapters.");
+        $("#manga-random-minchapters").val(0);
+        $("#manga-random-maxchapters").val(0);
+        return false;
+    } else if ((minChapters < 0) || (maxChapters < 0)) {
+        alert("The amount of chapters can't be negative values.");
+        $("#manga-random-minchapters").val(0);
+        $("#manga-random-maxchapters").val(0);
+        return false;
+    }
+
+	
+    var minVolumes = $("#manga-random-minvolumes").val();
+    var maxVolumes = $("#manga-random-maxvolumes").val();
+    if ((minVolumes > maxVolumes) && maxVolumes != 0) {
+        alert("The minimum amount of volumes can't be bigger than the maximum amount of volumes.");
+        $("#manga-random-minvolumes").val(0);
+        $("#manga-random-maxvolumes").val(0);
+        return false;
+    } else if ((minVolumes < 0) || (maxVolumes < 0)) {
+        alert("The amount of volumes can't be negative values.");
+        $("#manga-random-minvolumes").val(0);
+        $("#manga-random-maxvolumes").val(0);
+        return false;
+    }
+
+    var animes = [];
+
+
+    for (var i = 0; i < animeData.length; i++) { // AnyWatch
+        if (reading) {
+            if (animeData[i].status == 1) {
+                animes.push(animeData[i]);
+                continue;
+            }
+        }
+        if (completed) {
+            if (animeData[i].status == 2) {
+                animes.push(animeData[i]);
+                continue;
+            }
+        }
+        if (onhold) {
+            if (animeData[i].status == 3) {
+                animes.push(animeData[i]);
+                continue;
+            }
+        }
+        if (dropped) {
+            if (animeData[i].status == 4) {
+                animes.push(animeData[i]);
+                continue;
+            }
+        }
+        if (plantoread) {
+            if (animeData[i].status == 6) {
+                animes.push(animeData[i]);
+                continue;
+            }
+        }
+
+    }
+
+
+
+    var _animes = [];
+    for (var i = 0; i < animes.length; i++) { // AnyWatch
+        if (publishing) {
+            if (animes[i].manga_publishing_status == 1) {
+                _animes.push(animeData[i]);
+                continue;
+            }
+        }
+        if (finished) {
+            if (animes[i].manga_publishing_status == 2) {
+                _animes.push(animes[i]);
+                continue;
+            }
+        }
+        if (notyetpublished) {
+            if (animes[i].manga_publishing_status == 3) {
+                _animes.push(animes[i]);
+                continue;
+            }
+        }
+        if (onhiatus) {
+            if (animes[i].manga_publishing_status == 4) {
+                _animes.push(animes[i]);
+                continue;
+            }
+        }
+		if (discontinued) {
+            if (animes[i].manga_publishing_status == 5) {
+                _animes.push(animes[i]);
+                continue;
+            }
+        }
+    }
+    animes = _animes;
+    _animes = [];
+
+    for (var i = 0; i < animes.length; i++) { // AnyWatch
+        if (manga) {
+            if (animes[i].manga_media_type_string == "Manga") {
+                _animes.push(animes[i]);
+                continue;
+            }
+        }
+		if (oneshot) {
+            if (animes[i].manga_media_type_string == "One-shot") {
+                _animes.push(animes[i]);
+                continue;
+            }
+        }
+		if (doujinshi) {
+            if (animes[i].manga_media_type_string == "Doujinshi") {
+                _animes.push(animes[i]);
+                continue;
+            }
+        }
+        if (lightnovel) {
+            if (animes[i].manga_media_type_string == "Light Novel") {
+                _animes.push(animes[i]);
+                continue;
+            }
+        }
+        if (novel) {
+            if (animes[i].manga_media_type_string == "Novel") {
+                _animes.push(animes[i]);
+                continue;
+            }
+        }
+		if (manhwa) {
+            if (animes[i].manga_media_type_string == "Manhwa") {
+                _animes.push(animes[i]);
+                continue;
+            }
+        }
+        if (manhua) {
+            if (animes[i].manga_media_type_string == "Manhua") {
+                _animes.push(animes[i]);
+                continue;
+            }
+        }
+    }
+	
+    if (minChapters != 0 || maxChapters != 0) {
+        console.log("SÅ ER VI HERINDE!!!" + minChapters + ":" + maxChapters);
+        animes = _animes;
+        _animes = [];
+
+
+        if (minChapters != 0) {
+            console.log("Tjekker for min!");
+            for (var i = 0; i < animes.length; i++) {
+                if (animes[i].manga_num_chapters >= minChapters) {
+                    _animes.push(animes[i]);
+                    continue;
+                }
+            }
+            if (maxChapters != 0) {
+                animes = _animes;
+                _animes = [];
+            }
+        }
+
+
+
+
+        if (maxChapters != 0) {
+            console.log("Tjekker for maks")
+            for (var i = 0; i < animes.length; i++) {
+                if (animes[i].manga_num_episodes <= maxChapters) {
+                    _animes.push(animes[i]);
+                    continue;
+                }
+            }
+        }
+    }
+
+    if (minVolumes != 0 || maxVolumes != 0) {
+        console.log("SÅ ER VI HERINDE!!!" + minVolumes + ":" + maxVolumes);
+        animes = _animes;
+        _animes = [];
+
+
+        if (minVolumes != 0) {
+            console.log("Tjekker for min!");
+            for (var i = 0; i < animes.length; i++) {
+                if (animes[i].manga_num_chapters >= minVolumes) {
+                    _animes.push(animes[i]);
+                    continue;
+                }
+            }
+            if (maxVolumes != 0) {
+                animes = _animes;
+                _animes = [];
+            }
+        }
+
+
+
+
+        if (maxVolumes != 0) {
+            console.log("Tjekker for maks")
+            for (var i = 0; i < animes.length; i++) {
+                if (animes[i].manga_num_episodes <= maxVolumes) {
+                    _animes.push(animes[i]);
+                    continue;
+                }
+            }
+        }
+    }
+	
+    animes = _animes;
+    _animes = [];
+    $("#manga-random-finalcount").text(animes.length);
+    if (animes.length < 1) {
+        $("#buildRoulette").attr("disabled", "disabled");
+    } else {
+        $("#buildRoulette").removeAttr("disabled", "disabled");
+    }
+    return animes;
+}
 }
 
 function fillRoulette() {
@@ -562,7 +845,11 @@ function fillRoulette() {
     var appendAnimes = "";
     for (var i = 0; i < 500; i++) {
         var whatAnime = randomIntFromInterval(0, animes.length - 1);
+		if (rouletteType === "anime") {
         appendAnimes += "<li anime='" + whatAnime + "' style='display:inline;' class='imageContainer noselect' ><img src='" + animes[whatAnime].anime_image_path + "' draggable='false' class='noselect' /></li>";
+		} else {
+		appendAnimes += "<li anime='" + whatAnime + "' style='display:inline;' class='imageContainer noselect' ><img src='" + animes[whatAnime].manga_image_path + "' draggable='false' class='noselect' /></li>";
+		}
     }
     document.getElementById("appendRoulette").innerHTML = "";
     document.getElementById("appendRoulette").innerHTML += appendAnimes;
@@ -585,6 +872,7 @@ function checkIfUndefined(what) {
 var randomizerOpenURL = "";
 
 function spinRoulette() {
+if (rouletteType === "anime") {
     //$("#rouletteResult p, #rouletteResult td").animate({ "font-size": "0px" }, 2000, "swing");
     //$("#resultButtons td").fadeOut();
     $("#rouletteResult p, #rouletteResult td").css("font-size", "0px");
@@ -594,12 +882,15 @@ function spinRoulette() {
     $("#appendRoulette").css("margin-left", "-" + howMuch + "px");
     setTimeout(function () {
         var whatLi = Math.floor((howMuch + 5) / 96) + Math.floor((Math.floor($(".theRoulette").width()) / 2) / 96);
-
+	console.log(whatLi);
         var anime = animes[parseInt($($(".slider").children("li")[whatLi]).attr("anime"))];
+	console.log(animes);
+	console.log(anime);
         $("#rouletteAnimeTitle").text(checkIfUndefined(anime.anime_title));
         $("#rouletteAnimeEpisodes").text("Episodes: " + checkIfUndefined(anime.anime_num_episodes));
         $("#rouletteAnimeRating").text("Rating: " + checkIfUndefined(anime.anime_mpaa_rating_string));
         $("#rouletteAnimeAired").text("Aired: " + readableDate(anime.anime_start_date_string));
+
         randomizerOpenURL = "http://myanimelist.net" + anime.anime_url;
         $("#rouletteAnimeTitle").animate({
             "font-size": "25px"
@@ -622,6 +913,47 @@ function spinRoulette() {
             }, 500); //500
         });
     }, 10000); //10000
+} else {
+    //$("#rouletteResult p, #rouletteResult td").animate({ "font-size": "0px" }, 2000, "swing");
+    //$("#resultButtons td").fadeOut();
+    $("#rouletteResult p, #rouletteResult td").css("font-size", "0px");
+    $("#resultButtons td").hide();
+    var howMuch = randomIntFromInterval(1000, 46000);
+    var animes = getAnimePosibilities();
+    $("#appendRoulette").css("margin-left", "-" + howMuch + "px");
+    setTimeout(function () {
+        var whatLi = Math.floor((howMuch + 5) / 136) + Math.floor((Math.floor($(".theRoulette").width()) / 2) / 136);
+	console.log(whatLi);
+        var anime = animes[parseInt($($(".slider").children("li")[whatLi]).attr("anime"))];
+	console.log(animes);
+	console.log(anime);
+        $("#rouletteMangaTitle").text(checkIfUndefined(anime.manga_title));
+        $("#rouletteMangaChapters").text("Chapters: " + checkIfUndefined(anime.manga_num_chapters));
+		$("#rouletteMangaVolumes").text("Volumes: " + checkIfUndefined(anime.manga_num_volumes));
+        $("#rouletteMangaPublished").text("Aired: " + readableDate(anime.manga_start_date_string));
+        randomizerOpenURL = "http://myanimelist.net" + anime.manga_url;
+        $("#rouletteMangaTitle").animate({
+            "font-size": "25px"
+        }, 2000, "swing", function () {
+            $("#rouletteMangaChapters").animate({
+                "font-size": "15px"
+            }, 2000, "swing");
+			setTimeout(function () {
+                $("#rouletteMangaVolumes").animate({
+                    "font-size": "15px"
+                }, 2000, "swing");
+				setTimeout(function () {
+					$("#rouletteMangaPublished").animate({
+						"font-size": "15px"
+					}, 2000, "swing");
+					setTimeout(function () {
+						$("#resultButtons td").fadeIn(1000); //1000
+					}, 1500); //1500
+				}, 500); //500
+            }, 500); //500
+        });
+    }, 10000); //10000
+}
 }
 
 function resetRoulette(restart) {
@@ -954,13 +1286,13 @@ var knownNames = [];
 var changes = false;
 
 function enableBBCodeClub() {
-    $("#content > table > tbody > tr > td.borderClass > div > div.clearfix").after("<button class='MAL-ENCH-BBCODECLUB'>Parse description to BBCode</button>");
+    $("#content > table > tbody > tr > td.borderClass > div > div.clearfix").after("<button class='MAL-ENCH-BBCODECLUB'>Extract description to BBCode</button>");
 }
 function enableBBCodeSig() {
-    $(".page-forum .sig").after("<button class='MAL-ENCH-BBCODESIG'>Parse signature to BBCode</button>");
+    $(".page-forum .sig").after("<button class='MAL-ENCH-BBCODESIG'>Extract signature to BBCode</button>");
 }
 function enableBBCodeHapser() {
-    $(".dialog-text > .lightLink").after("<button class='MAL-ENCH-BBCODEHAPSER'>Parse message to BBCode</button>");
+    $(".dialog-text > .lightLink").after("<button class='MAL-ENCH-BBCODEHAPSER'>Extract message to BBCode</button>");
 }
 
 function setMessageBackup(key, value) {
@@ -1133,7 +1465,7 @@ function enableMessageBeautifier() {
             for (var key in messages) {
                 var message = messages[key];
                 var toAppend = "<div><div class='MAL-ENCH-message'>";
-                toAppend += "<div class='MAL-ENCH-infopanel' style='float:left;'><a target='_blank' href='https://myanimelist.net/profile/" + message.from + "'><strong>" + message.from + "</strong></a><br><img alt='Loading " + message.from + "s profile picture..' class='findmypic' name='" + message.from + "' src=''><br><p>" + message.date + "</p><button class='MAL-ENCH-parseHTML' style='font-size:9px;'>Parse message to BBCode</button></div>";
+                toAppend += "<div class='MAL-ENCH-infopanel' style='float:left;'><a target='_blank' href='https://myanimelist.net/profile/" + message.from + "'><strong>" + message.from + "</strong></a><br><img alt='Loading " + message.from + "s profile picture..' class='findmypic' name='" + message.from + "' src=''><br><p>" + message.date + "</p><button class='MAL-ENCH-parseHTML' style='font-size:9px;'>Extract message to BBCode</button></div>";
                 toAppend += "<div class='MAL-ENCH-messagecontent'>" + message.message + "</div>";
                 toAppend += "</div><hr>";
                 messagePanel.append(toAppend);
