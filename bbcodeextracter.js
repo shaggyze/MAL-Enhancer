@@ -1,4 +1,4 @@
-function exportBBCode(htmlCode) {
+function parseBBCode(htmlCode) {
 
     var output = htmlCode;
     //Export all the easy stuff
@@ -34,8 +34,8 @@ function removeTags(htmlData){
     running++;
     if(running > 1000){
         var w = window.open('', "", "scrollbars=yes,width=800,height=450");
-        $(w.document.head).append("<title>PARSING RESULT ~ MAL ENHANCER ~</title><style>body{padding:5px;}</style>");
-        $(w.document.body).append("<h1>Parsing failed:</h1>");
+        $(w.document.head).append("<title>EXTRACTING RESULT ~ MAL ENHANCER ~</title><style>body{padding:5px;}</style>");
+        $(w.document.body).append("<h1>Extracting failed:</h1>");
         $(w.document.body).append("<textarea rows='15' cols='90'>The message was either too long (more than 1000 tags), or contained unsolveable HTML. Please report this, along with the message you tried to export, to the developer!</textarea>");
         return;
     }
@@ -128,15 +128,33 @@ function removeTags(htmlData){
             return;
         }
         
-        if(workWith.prop("tagName") == "IMG"){ //Links
-            var src = workWith.attr("src");
-            if(src === undefined){
-                src = workWith.attr("src2");
-            }
+        if(workWith.prop("tagName") == "IMG"){ //Images
+		var src = workWith.attr("src");
+		if (src === undefined){
+            src = workWith.attr("src2");
+        }
+		var imgclass = workWith.attr("class")
+		if (imgclass === "userimg") {
             var replaceWith = "[img]"+src+"[/img]";
             htmlData = htmlData.replaceAll(obj[0].outerHTML, replaceWith);
             removeTags(htmlData);
             return;
+		} else if (imgclass === "userimg img-a-l") {
+            var replaceWith = "[img align=left]"+src+"[/img]";
+            htmlData = htmlData.replaceAll(obj[0].outerHTML, replaceWith);
+            removeTags(htmlData);
+            return;
+		} else if (imgclass === "userimg img-a-r") {
+            var replaceWith = "[img align=right]"+src+"[/img]";
+            htmlData = htmlData.replaceAll(obj[0].outerHTML, replaceWith);
+            removeTags(htmlData);
+            return;
+		} else {
+		    var replaceWith = "[img]"+src+"[/img]";
+            htmlData = htmlData.replaceAll(obj[0].outerHTML, replaceWith);
+            removeTags(htmlData);
+            return;
+		}
         }
         
         //I don't know what the fuck to do. 
@@ -149,8 +167,8 @@ function removeTags(htmlData){
         //console.log(htmlData);
         
         var w = window.open('', "", "scrollbars=yes,width=680,height=320");
-        $(w.document.head).append("<title>PARSING RESULT ~ MAL ENHANCER ~</title><style>body{padding:5px;}</style>");
-        $(w.document.body).append("<h1>Parsing result:</h1>");
+        $(w.document.head).append("<title>EXTRACTING RESULT ~ MAL ENHANCER ~</title><style>body{padding:5px;}</style>");
+        $(w.document.body).append("<h1>Extracting result:</h1>");
         $(w.document.body).append("<textarea rows='15' cols='90'>"+htmlData+"</textarea>");
     }
     
