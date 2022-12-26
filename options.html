@@ -16,6 +16,9 @@
 		td{
 		    font-size: 13px;
 		}
+		small{
+		    font-size: 11px;
+		}
         i{
             font-size: 11px;
         }
@@ -25,6 +28,7 @@
 <body>
     <h2>MAL Enhancer options</h2>
     <p>Changing of any option will require a page refresh!</p>
+	<p id="notifier"> </p>
     <table>
         <thead>
             <tr>
@@ -43,14 +47,56 @@
                 </td>
             </tr>
 		    <tr>
-                <td>BBCode Extracter<br /><i>Copy any about me (classic), message, club description, or signature to BBCode.</i></td>
+                <td>BBCode Extractor<br /><i>Copy any about me (classic), post, private message, comment, blog, club description or signature to BBCode.</i></td>
                 <td>
-                    <!--<select id="bbcodeparser">
+				    <select id="allbbcode">
                         <option value="true">Enabled</option>
                         <option value="false">Disabled</option>
-                    </select>-->
+                    </select>
                 </td>
             </tr>
+			<tr>
+			<td>
+				<small>About me</small>
+				    <select id="profilebbcode">
+                        <option value="true">Enabled</option>
+                        <option value="false">Disabled</option>
+                    </select>
+				<small>Post</small>
+				    <select id="postbbcode">
+                        <option value="true">Enabled</option>
+                        <option value="false">Disabled</option>
+                    </select>
+					<small>Private message</small>
+				    <select id="pmbbcode">
+                        <option value="true">Enabled</option>
+                        <option value="false">Disabled</option>
+                    </select>
+				<br>
+				<small>Comment</small>
+				    <select id="commentbbcode">
+                        <option value="true">Enabled</option>
+                        <option value="false">Disabled</option>
+                    </select>
+				<small>Blog</small>
+				    <select id="blogbbcode">
+                        <option value="true">Enabled</option>
+                        <option value="false">Disabled</option>
+                    </select>
+				<br>
+				<small>Club description</small>
+				    <select id="clubbbcode">
+                        <option value="true">Enabled</option>
+                        <option value="false">Disabled</option>
+                    </select>
+				<br>
+				<small>Signature</small>
+				    <select id="sigbbcode">
+                        <option value="true">Enabled</option>
+                        <option value="false">Disabled</option>
+                    </select>
+			</td>
+			</tr>
             <tr>
                 <td>Enable BBCode Helper<br /><i>Enables an editor while writing a message, forum post, blog post, club description, or editing your profile.</i></td>
                 <td>
@@ -140,7 +186,6 @@
             </tr>
         </tbody>
     </table>
-    <p id="notifier"> </p>
 	<script src="jquery.js"></script>
     <script src="options.js"></script>
 </body>

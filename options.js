@@ -1,5 +1,46 @@
 $("select").change(function () {
-    saveSettings();
+	chrome.storage.sync.get("allbbcode", function (data) {
+	if (data.allbbcode == "true" || data.allbbcode == undefined) {
+	} else {
+		$("select#profilebbcode").val("false");
+		$("select#postbbcode").val("false");
+		$("select#pmbbcode").val("false");
+		$("select#commentbbcode").val("false");
+		$("select#blogbbcode").val("false");
+		$("select#clubbbcode").val("false");
+		$("select#sigbbcode").val("false");
+	}
+	});
+	saveSettings();
+});
+
+$("select#allbbcode").change(function () {
+    chrome.storage.sync.get("allbbcode", function (data) {
+		if (data.allbbcode == "true" || data.allbbcode == undefined) {
+			chrome.storage.sync.set({ "profilebbcode": "true", "postbbcode": "true", "pmbbcode": "true", "commentbbcode": "true", "blogbbcode": "true", "clubbbcode": "true", "sigbbcode": "true" }, function () {
+			$("select#profilebbcode").val("true");
+			$("select#postbbcode").val("true");
+			$("select#pmbbcode").val("true");
+			$("select#commentbbcode").val("true");
+			$("select#blogbbcode").val("true");
+			$("select#clubbbcode").val("true");
+			$("select#sigbbcode").val("true");
+			return;
+			});
+		} else {
+
+			chrome.storage.sync.set({ "profilebbcode": "false", "postbbcode": "false", "pmbbcode": "false", "commentbbcode": "false", "blogbbcode": "false", "clubbbcode": "false", "sigbbcode": "false" }, function () {
+			$("select#profilebbcode").val("false");
+			$("select#postbbcode").val("false");
+			$("select#pmbbcode").val("false");
+			$("select#commentbbcode").val("false");
+			$("select#blogbbcode").val("false");
+			$("select#clubbbcode").val("false");
+			$("select#sigbbcode").val("false");
+			return;
+			});
+		}
+	});
 });
 
 $("#toggleUserCSS").click(function () {
@@ -7,6 +48,14 @@ $("#toggleUserCSS").click(function () {
 });
 
 function saveSettings() {
+	var allbbcode = $("select#allbbcode").val();
+	var profilebbcode = $("select#profilebbcode").val();
+	var postbbcode = $("select#postbbcode").val();
+	var pmbbcode = $("select#pmbbcode").val();
+	var commentbbcode = $("select#commentbbcode").val();
+	var blogbbcode = $("select#blogbbcode").val();
+	var clubbbcode = $("select#clubbbcode").val();
+	var sigbbcode = $("select#sigbbcode").val();
     var bbcodehelper = $("select#bbcodehelper").val();
     var animefinder = $("select#animefinder").val();
     var customCSS = $("select#customCSS").val();
@@ -16,8 +65,8 @@ function saveSettings() {
     var improvedhistory = $("select#improvedhistory").val();
 	var footer = $("select#footer").val();
 	var terms = $("select#terms").val();
-    chrome.storage.sync.set({ "bbcodehelper": bbcodehelper, "animefinder": animefinder, "improvedhistory": improvedhistory, "customCSS": customCSS, "animeRoulette": animeRoulette, "messageBeautifier": messageBeautifier, "messageDrafts": messageDrafts, "footer": footer, "terms": terms}, function () {
-        var d = new Date();
+    chrome.storage.sync.set({ "allbbcode": allbbcode, "profilebbcode": profilebbcode, "postbbcode": postbbcode, "pmbbcode": pmbbcode, "commentbbcode": commentbbcode, "blogbbcode": blogbbcode, "clubbbcode": clubbbcode, "sigbbcode": sigbbcode, "bbcodehelper": bbcodehelper, "animefinder": animefinder, "improvedhistory": improvedhistory, "customCSS": customCSS, "animeRoulette": animeRoulette, "messageBeautifier": messageBeautifier, "messageDrafts": messageDrafts, "footer": footer, "terms": terms}, function () {
+		var d = new Date();
         $("#notifier").text("Saved Settings!").css("color", "green");
         $("#notifier").stop().show().delay(500).fadeOut(3000);
     });

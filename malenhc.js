@@ -95,18 +95,20 @@ $(document).ready(function () {
         enableBBCodeHelper("textarea[name='msg_text']");
     } else if (window.location.pathname == "/forum/" && window.location.search.startsWith("?action=post")) {
         console.info("[MAL Enhancer] Creating a forumpost! Enabeling BBCode helper");
-        enableAnimeFinder("textarea[name='msg_text']");
-        enableBBCodeHelper("textarea[name='msg_text']");
+        enableAnimeFinder("textarea");
+        enableBBCodeHelper("textarea");
     } else if (window.location.pathname == "/forum/" && window.location.search.startsWith("?topicid=")) {
         console.info("[MAL Enhancer] Viewing a forumpost! Enabeling BBCode helper");
         enableAnimeFinder("#quickReply #messageText");
         enableBBCodeHelper("#quickReply #messageText");
 		enableBBCodeSig();
-    } else if (window.location.pathname == "/clubs.php" && window.location.search.startsWith("?cid=") || window.location.search.startsWith("?action=create")) {
-        console.info("[MAL Enhancer] Creating a club! Enabeling Anime Finder & BBCode Helper");
+		enableBBCodePost();
+    } else if (window.location.pathname == "/clubs.php" && window.location.search.startsWith("?cid=") || window.location.search.startsWith("?action=create") || window.location.search.endsWith("&t=comments")) {
+        console.info("[MAL Enhancer] Looking at a club! Enabeling Anime Finder & BBCode Helper");
         enableAnimeFinder("textarea[name='club_description']");
         enableBBCodeHelper("textarea[name='club_description']");
 		enableBBCodeClub();
+		enableBBCodeCom3();
         setTimeout(function () {
             $("#bbCodeEditor").css("width", "594px");
         }, 500);
@@ -116,10 +118,33 @@ $(document).ready(function () {
         enableAnimeFinder("textarea[name='commentText']");
         enableBBCodeHelper("textarea[name='commentText']");
         enableImprovedHistory();
+		enableBBCodeCom();
         //First decide if profile actually has content.
-        if ($(".word-break").html() !== undefined) {
-            $("#contentWrapper .h1").append("<button class='MAL-ENCH-getProfileBBCode' style='display:inline; float:right; font-size:9px;'>Extract profile-text to BBCode</button>")
-        }
+		chrome.storage.sync.get("allbbcode", function (data) {
+		if (data.allbbcode == "true" || data.allbbcode == undefined) {
+		chrome.storage.sync.get("profilebbcode", function (data) {
+		  if (data.profilebbcode == "true" || data.profilebbcode == undefined) {
+            if ($(".word-break").html() !== undefined) {
+			  console.info("[MAL Enhancer] Looking at a profile page! Enabeling BBCode Extractor.");
+              $("#contentWrapper .h1").append("<button class='MAL-ENCH-getProfileBBCode' style='display:inline; float:right; font-size:9px;'>Extract profile-text to BBCode</button>")
+            }
+	      } else {
+		    console.info("[MAL Enhancer] Profile BBCode disabled in config.");
+	      }
+		  });
+		} else {
+		  console.info("[MAL Enhancer] All BBCode disabled in config.");
+	    }
+		});
+	} else if (window.location.pathname.startsWith("/blog")) {
+	    console.info("[MAL Enhancer] Looking at a blogs page! Enabeling BBCode Extractor.");
+		enableBBCodeBlog();
+	} else if (window.location.pathname == "/comments.php") {
+	    console.info("[MAL Enhancer] Looking at a comments page! Enabeling BBCode Extractor.");
+		enableBBCodeCom2();
+	} else if (window.location.pathname == "/comtocom.php") {
+	    console.info("[MAL Enhancer] Looking at a comtocom page! Enabeling BBCode Extractor.");
+		enableBBCodeCom2();
     } else if (window.location.pathname.startsWith("/mangalist/")) {
         var user = window.location.pathname.substr(11).split("?")[0].trim();
         console.info("[MAL Enhancer] Viewing " + user + "'s mangalist.");
@@ -183,7 +208,7 @@ function downloadAllAnimeData(user, offset) {
         if (data.length == 300) {
             downloadAllAnimeData(user, offset + 300);
         } else {
-            $("body").append("<div title='Anime Roulette' class='MAL-ENCH-randombadge'><i class='fa fa-random' aria-hidden='true'></i></div>");
+            $("body").append("<div title='Anime Roulette' class='MAL-ENCH-randombadge' z-index='1'><i class='fa fa-random' aria-hidden='true'></i></div>");
         }
     });
 	} else {
@@ -194,7 +219,7 @@ function downloadAllAnimeData(user, offset) {
         if (data.length == 300) {
             downloadAllAnimeData(user, offset + 300);
         } else {
-            $("body").append("<div title='Manga Roulette' class='MAL-ENCH-randombadge'><i class='fa fa-random' aria-hidden='true'></i></div>");
+            $("body").append("<div title='Manga Roulette' class='MAL-ENCH-randombadge' z-index='1'><i class='fa fa-random' aria-hidden='true'></i></div>");
         }
     });
 	}
@@ -293,6 +318,16 @@ $(document).on('click', '.animeselected', function () {
     parseBBCode($(this).parent().find(".clearfix").html());
 }).on('click', ".MAL-ENCH-BBCODESIG", function (e) {
     parseBBCode($(this).parent().find(".sig").html());
+}).on('click', ".MAL-ENCH-BBCODEPOST", function (e) {
+    parseBBCode($(this).parent().find(".message-text").html());
+}).on('click', ".MAL-ENCH-BBCODEBLOG", function (e) {
+    parseBBCode($(this).html());
+}).on('click', ".MAL-ENCH-BBCODECOM", function (e) {
+	parseBBCode($(this).parent().html());
+}).on('click', ".MAL-ENCH-BBCODECOM2", function (e) {
+	parseBBCode($(this).parent().html());
+}).on('click', ".MAL-ENCH-BBCODECOM3", function (e) {
+	parseBBCode($(this).html());
 }).on('click', ".MAL-ENCH-BBCODEHAPSER", function (e) {
     var test = $(this).parent().html();
     var skipMuch = test.split("</div>", 2)[0].length + test.split("</div>", 2)[1].length + 12; //I sometimes call myself a programmer... What a joke...
@@ -1286,13 +1321,125 @@ var knownNames = [];
 var changes = false;
 
 function enableBBCodeClub() {
-    $("#content > table > tbody > tr > td.borderClass > div > div.clearfix").after("<button class='MAL-ENCH-BBCODECLUB'>Extract description to BBCode</button>");
+		chrome.storage.sync.get("allbbcode", function (data) {
+		if (data.allbbcode == "true" || data.allbbcode == undefined) {
+		chrome.storage.sync.get("clubbbcode", function (data) {
+		  if (data.clubbbcode == "true" || data.clubbbcode == undefined) {
+		    $("#content > table > tbody > tr > td.borderClass > div > div.clearfix").after("<button class='MAL-ENCH-BBCODECLUB'>Extract description to BBCode</button>");
+	      } else {
+		    console.info("[MAL Enhancer] Club description BBCode disabled in config.");
+	      }
+		  });
+		} else {
+		  console.info("[MAL Enhancer] All BBCode disabled in config.");
+	    }
+		});
 }
 function enableBBCodeSig() {
-    $(".page-forum .sig").after("<button class='MAL-ENCH-BBCODESIG'>Extract signature to BBCode</button>");
+		chrome.storage.sync.get("allbbcode", function (data) {
+		if (data.allbbcode == "true" || data.allbbcode == undefined) {
+		chrome.storage.sync.get("sigbbcode", function (data) {
+		  if (data.sigbbcode == "true" || data.sigbbcode == undefined) {
+		    $(".page-forum .sig-container").css("max-height", "300px");
+			$(".page-forum .sig").after("<button class='MAL-ENCH-BBCODESIG'>Extract signature to BBCode</button>");
+	      } else {
+		    console.info("[MAL Enhancer] Signature BBCode disabled in config.");
+	      }
+		  });
+		} else {
+		  console.info("[MAL Enhancer] All BBCode disabled in config.");
+	    }
+		});
+}
+function enableBBCodePost() {
+		chrome.storage.sync.get("allbbcode", function (data) {
+		if (data.allbbcode == "true" || data.allbbcode == undefined) {
+		chrome.storage.sync.get("postbbcode", function (data) {
+		  if (data.postbbcode == "true" || data.postbbcode == undefined) {
+			$(".page-forum .message-text").after("<button class='MAL-ENCH-BBCODEPOST'>Extract post to BBCode</button>");
+	      } else {
+		    console.info("[MAL Enhancer] Post BBCode disabled in config.");
+	      }
+		  });
+		} else {
+		  console.info("[MAL Enhancer] All BBCode disabled in config.");
+	    }
+		});
+}
+function enableBBCodeBlog() {
+		chrome.storage.sync.get("allbbcode", function (data) {
+		if (data.allbbcode == "true" || data.allbbcode == undefined) {
+		chrome.storage.sync.get("blogbbcode", function (data) {
+		  if (data.blogbbcode == "true" || data.blogbbcode == undefined) {
+		    $(".borderClass").before("<button class='MAL-ENCH-BBCODEBLOG'>Extract blog to BBCode (not working)</button>");
+	      } else {
+		    console.info("[MAL Enhancer] Blog BBCode disabled in config.");
+	      }
+		  });
+		} else {
+		  console.info("[MAL Enhancer] All BBCode disabled in config.");
+	    }
+		});
+}
+function enableBBCodeCom() {
+		chrome.storage.sync.get("allbbcode", function (data) {
+		if (data.allbbcode == "true" || data.allbbcode == undefined) {
+		chrome.storage.sync.get("commentbbcode", function (data) {
+		  if (data.commentbbcode == "true" || data.commentbbcode == undefined) {
+		    $(".comment-text").append("<br><button class='MAL-ENCH-BBCODECOM'>Extract comment to BBCode</button>");
+	      } else {
+		    console.info("[MAL Enhancer] Comment BBCode disabled in config.");
+	      }
+		  });
+		} else {
+		  console.info("[MAL Enhancer] All BBCode disabled in config.");
+	    }
+		});
+}
+function enableBBCodeCom2() {
+		chrome.storage.sync.get("allbbcode", function (data) {
+		if (data.allbbcode == "true" || data.allbbcode == undefined) {
+		chrome.storage.sync.get("commentbbcode", function (data) {
+		  if (data.commentbbcode == "true" || data.commentbbcode == undefined) {
+		    $(".spaceit").append("<br><button class='MAL-ENCH-BBCODECOM2'>Extract comment to BBCode</button>");
+	      } else {
+		    console.info("[MAL Enhancer] Comment BBCode disabled in config.");
+	      }
+		  });
+		} else {
+		  console.info("[MAL Enhancer] All BBCode disabled in config.");
+	    }
+		});
+}
+function enableBBCodeCom3() {
+		chrome.storage.sync.get("allbbcode", function (data) {
+		if (data.allbbcode == "true" || data.allbbcode == undefined) {
+		chrome.storage.sync.get("commentbbcode", function (data) {
+		  if (data.commentbbcode == "true" || data.commentbbcode == undefined) {
+		    $("div[id^=comment] td:nth-of-type(2)").append("<br><button class='MAL-ENCH-BBCODECOM3'>Extract comment to BBCode (not working)</button>");
+	      } else {
+		    console.info("[MAL Enhancer] Comment BBCode disabled in config.");
+	      }
+		  });
+		} else {
+		  console.info("[MAL Enhancer] All BBCode disabled in config.");
+	    }
+		});
 }
 function enableBBCodeHapser() {
-    $(".dialog-text > .lightLink").after("<button class='MAL-ENCH-BBCODEHAPSER'>Extract message to BBCode</button>");
+		chrome.storage.sync.get("allbbcode", function (data) {
+		if (data.allbbcode == "true" || data.allbbcode == undefined) {
+		chrome.storage.sync.get("pmbbcode", function (data) {
+		  if (data.pmbbcode == "true" || data.pmbbcode == undefined) {
+		    $(".dialog-text > .lightLink").after("<button class='MAL-ENCH-BBCODEHAPSER'>Extract message to BBCode</button>");
+	      } else {
+		    console.info("[MAL Enhancer] Private message BBCode disabled in config.");
+	      }
+		  });
+		} else {
+		  console.info("[MAL Enhancer] All BBCode disabled in config.");
+	    }
+		});
 }
 
 function setMessageBackup(key, value) {
