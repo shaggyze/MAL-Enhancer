@@ -3,11 +3,10 @@
    "name": "MAL Enhancer",
    "short_name": "MALENHC",
    "description": "Enhances MAL for a better user experience. Suggestions are welcome!",
-   "update_url": "https://clients2.google.com/service/update2/crx",
    "version": "3.2",
    "manifest_version": 3,
    "host_permissions": [ "*://*.myanimelist.net/*" ],
-   "permissions": [ "declarativeContent", "storage" ],
+   "permissions": [ "webRequest", "storage" ],
    "content_scripts": [ {
       "css": [ "style.css", "gitgraph.css" ],
       "js": [ "jquery.js", "malenhc.js", "bbcodehelper.js", "bbcodeextracter.js", "gitgraph.min.js" ],
@@ -16,8 +15,8 @@
    } ],
    "browser_specific_settings": {
     "gecko": {
-     "id": "malenhancer@shaggyze.website",
-     "strict_min_version": "42.0"
+     "id": "shaggyze@gmail.com",
+     "strict_min_version": "109.0"
     }
    },
    "icons": {
