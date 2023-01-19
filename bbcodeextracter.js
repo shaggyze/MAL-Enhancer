@@ -125,6 +125,8 @@ function removeTags(htmlData){
             return;
         }
 		
+
+		
         //First we find out what it is we're working with.
         if(workWith.prop("tagName") == "IFRAME"){ //a YT video
             var replaceWith = "[yt]" + workWith.attr("src").split("/embed/")[1].substr(0,11) + "[/yt]";
@@ -210,6 +212,11 @@ function removeTags(htmlData){
 				var replaceWith = "[code]" + workWith.first().html() + "[/code]";
 				htmlData = htmlData.replaceAll(obj[0].outerHTML, replaceWith);
 				removeTags(htmlData);
+			}else{
+			if(!workWith.attr("style") === "undefined"){
+				htmlData = htmlData.replaceAll(obj[0].outerHTML, "");
+				removeTags(htmlData);
+
             }else if(workWith.attr("style").endsWith("center;")){//Align center
                 var replaceWith = "[center]" + workWith.html() + "[/center]";
                 htmlData = htmlData.replaceAll(obj[0].outerHTML, replaceWith);
@@ -222,8 +229,11 @@ function removeTags(htmlData){
                 var replaceWith = "[right]" + workWith.html() + "[/right]";
                 htmlData = htmlData.replaceAll(obj[0].outerHTML, replaceWith);
                 removeTags(htmlData);
-            }
-
+            }else{
+				htmlData = htmlData.replaceAll(obj[0].outerHTML, "");
+				removeTags(htmlData);
+			}
+			}
             return;
         }
         

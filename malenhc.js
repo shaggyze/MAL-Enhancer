@@ -56,7 +56,8 @@ var animelistLayoutIsOld = null;
 var animelistLayoutIsNew = null;
 var animeData = [];
 var rouletteType = "anime";
-
+var textIndex = 0;
+		
 //Choose if should be enabled
 $(document).ready(function () {
 	if (document.querySelector('.footer-desktop-button') !== null) {
@@ -91,16 +92,18 @@ $(document).ready(function () {
         enableBBCodeHelper("textarea[name='entry_text']");
     } else if (window.location.pathname == "/forum/" && window.location.search.startsWith("?action=message")) {
         console.info("[MAL Enhancer] Replying to a forumpost! Enabeling BBCode helper");
-        enableAnimeFinder("textarea[name='msg_text']");
-        enableBBCodeHelper("textarea[name='msg_text']");
+	$("textarea").each(function () {
+	  textIndex += 2;
+	  if (!$(this).attr("name")) {$(this).attr("name", "msg_text" + textIndex);}
+    });
     } else if (window.location.pathname == "/forum/" && window.location.search.startsWith("?action=post")) {
         console.info("[MAL Enhancer] Creating a forumpost! Enabeling BBCode helper");
-        enableAnimeFinder("textarea");
-        enableBBCodeHelper("textarea");
+	$("textarea").each(function () {
+	  textIndex += 2;
+	  if (!$(this).attr("name")) {$(this).attr("name", "msg_text" + textIndex);}
+    });
     } else if (window.location.pathname == "/forum/" && window.location.search.startsWith("?topicid=")) {
         console.info("[MAL Enhancer] Viewing a forumpost! Enabeling BBCode helper");
-        enableAnimeFinder("#quickReply #messageText");
-        enableBBCodeHelper("#quickReply #messageText");
 		enableBBCodeSig();
 		enableBBCodePost();
     } else if (window.location.pathname == "/clubs.php" && window.location.search.startsWith("?cid=") || window.location.search.startsWith("?action=create") || window.location.search.endsWith("&t=comments")) {
@@ -270,6 +273,13 @@ if (window.location.pathname.startsWith("/animelist/") || window.location.pathna
 
 $(document).on('click', '.animeselected', function () {
     insertSelectedAnime();
+}).on('mouseover', '.sceditor-container', function (e) {
+	$("textarea").each(function () {
+	  textIndex += 1;
+	  if (!$(this).attr("name")) {$(this).attr("name", "msg_text" + textIndex);}
+    });
+	enableAnimeFinder("textarea[name='msg_text3']");
+    enableBBCodeHelper("textarea[name='msg_text3']");
 }).on('click', '.outerFlex', function (e) {
     if (choosingAnime && $(e.target).hasClass("outerFlex")) {
         cancelSearch();
@@ -304,7 +314,7 @@ $(document).on('click', '.animeselected', function () {
 }).on('click', '#restartRoulette', function (e) {
     resetRoulette(true);
 }).on('click', '.randomizerRoulette', function (e) {
-    $("#rouletteAnimeEpisodes, #rouletteAnimeRating, #rouletteAnimeAired, #rouletteAnimeTitle, #restartRoulette, #rouletteViewMAL").finish();
+    $("#rouletteAnimeEpisodes, #rouletteAnimeRating, #rouletteAnimeAired, #rouletteAnimeTitle, #rouletteMangaTitle, #rouletteMangaChapters, #rouletteMangaVolumes, #rouletteMangaPublished, #restartRoulette, #rouletteViewMAL").finish();
 }).on('click', '#customRoulettePlease', function (e) {
     $(".randomizerRoulette").slideUp();
     $(".roulettecursor").hide();
@@ -321,13 +331,13 @@ $(document).on('click', '.animeselected', function () {
 }).on('click', ".MAL-ENCH-BBCODEPOST", function (e) {
     parseBBCode($(this).parent().find(".message-text").html());
 }).on('click', ".MAL-ENCH-BBCODEBLOG", function (e) {
-    parseBBCode($(this).html());
+	parseBBCode($(this).parent().html());
 }).on('click', ".MAL-ENCH-BBCODECOM", function (e) {
 	parseBBCode($(this).parent().html());
 }).on('click', ".MAL-ENCH-BBCODECOM2", function (e) {
 	parseBBCode($(this).parent().html());
 }).on('click', ".MAL-ENCH-BBCODECOM3", function (e) {
-	parseBBCode($(this).html());
+	parseBBCode($(this).parent().html());
 }).on('click', ".MAL-ENCH-BBCODEHAPSER", function (e) {
     var test = $(this).parent().html();
     var skipMuch = test.split("</div>", 2)[0].length + test.split("</div>", 2)[1].length + 12; //I sometimes call myself a programmer... What a joke...
@@ -965,7 +975,7 @@ if (rouletteType === "anime") {
         $("#rouletteMangaTitle").text(checkIfUndefined(anime.manga_title));
         $("#rouletteMangaChapters").text("Chapters: " + checkIfUndefined(anime.manga_num_chapters));
 		$("#rouletteMangaVolumes").text("Volumes: " + checkIfUndefined(anime.manga_num_volumes));
-        $("#rouletteMangaPublished").text("Aired: " + readableDate(anime.manga_start_date_string));
+        $("#rouletteMangaPublished").text("Published: " + readableDate(anime.manga_start_date_string));
         randomizerOpenURL = "http://myanimelist.net" + anime.manga_url;
         $("#rouletteMangaTitle").animate({
             "font-size": "25px"
@@ -1371,7 +1381,11 @@ function enableBBCodeBlog() {
 		if (data.allbbcode == "true" || data.allbbcode == undefined) {
 		chrome.storage.sync.get("blogbbcode", function (data) {
 		  if (data.blogbbcode == "true" || data.blogbbcode == undefined) {
-		    $(".borderClass").before("<button class='MAL-ENCH-BBCODEBLOG'>Extract blog to BBCode (not working)</button>");
+		    $("div").each(function () {
+				//$(this).addClass("blog_text");
+			});
+		
+		    $(".blog_text").append("<button class='MAL-ENCH-BBCODEBLOG'>Extract blog to BBCode (not working)</button>");
 	      } else {
 		    console.info("[MAL Enhancer] Blog BBCode disabled in config.");
 	      }
@@ -1416,7 +1430,7 @@ function enableBBCodeCom3() {
 		if (data.allbbcode == "true" || data.allbbcode == undefined) {
 		chrome.storage.sync.get("commentbbcode", function (data) {
 		  if (data.commentbbcode == "true" || data.commentbbcode == undefined) {
-		    $("div[id^=comment] td:nth-of-type(2)").append("<br><button class='MAL-ENCH-BBCODECOM3'>Extract comment to BBCode (not working)</button>");
+		    $("div[id^=comment] td:nth-of-type(2)").append("<br><button class='MAL-ENCH-BBCODECOM3'>Extract comment to BBCode</button>");
 	      } else {
 		    console.info("[MAL Enhancer] Comment BBCode disabled in config.");
 	      }
