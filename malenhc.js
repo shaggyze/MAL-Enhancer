@@ -70,9 +70,9 @@ $(document).ready(function () {
 
     if (window.location.pathname == "/mymessages.php" && window.location.search.contains("go=send")) {
         console.info("[MAL Enhancer] Writing a message. Enabeling BBCode helper");
-        enableAnimeFinder("textarea[name='message']");
-        enableBBCodeHelper("textarea[name='message']", function () {
-            enableMessageBackup();
+		$("textarea").each(function () {
+	      textIndex += 3;
+	      if (!$(this).attr("name")) {$(this).attr("name", "msg_text" + textIndex);}
         });
         enableMessageBeautifier();
     } else if (window.location.pathname == "/mymessages.php" && !window.location.search.contains("go=read")) {
@@ -93,17 +93,22 @@ $(document).ready(function () {
     } else if (window.location.pathname == "/forum/" && window.location.search.startsWith("?action=message")) {
         console.info("[MAL Enhancer] Replying to a forumpost! Enabeling BBCode helper");
 	$("textarea").each(function () {
-	  textIndex += 2;
+	  textIndex += 1;
 	  if (!$(this).attr("name")) {$(this).attr("name", "msg_text" + textIndex);}
     });
     } else if (window.location.pathname == "/forum/" && window.location.search.startsWith("?action=post")) {
         console.info("[MAL Enhancer] Creating a forumpost! Enabeling BBCode helper");
+		var textIndex = 1;
 	$("textarea").each(function () {
-	  textIndex += 2;
+	  textIndex += 1;
 	  if (!$(this).attr("name")) {$(this).attr("name", "msg_text" + textIndex);}
     });
     } else if (window.location.pathname == "/forum/" && window.location.search.startsWith("?topicid=")) {
         console.info("[MAL Enhancer] Viewing a forumpost! Enabeling BBCode helper");
+		$("textarea").each(function () {
+	      textIndex += 1;
+	      if (!$(this).attr("name")) {$(this).attr("name", "msg_text" + textIndex);}
+        });
 		enableBBCodeSig();
 		enableBBCodePost();
     } else if (window.location.pathname == "/clubs.php" && window.location.search.startsWith("?cid=") || window.location.search.startsWith("?action=create") || window.location.search.endsWith("&t=comments")) {
@@ -275,11 +280,16 @@ $(document).on('click', '.animeselected', function () {
     insertSelectedAnime();
 }).on('mouseover', '.sceditor-container', function (e) {
 	$("textarea").each(function () {
-	  textIndex += 1;
 	  if (!$(this).attr("name")) {$(this).attr("name", "msg_text" + textIndex);}
     });
 	enableAnimeFinder("textarea[name='msg_text3']");
-    enableBBCodeHelper("textarea[name='msg_text3']");
+	  if (window.location.pathname == "/mymessages.php" && window.location.search.contains("go=send")) {
+	    enableBBCodeHelper("textarea[name='msg_text3']", function () {
+          enableMessageBackup();
+        });
+	} else {
+      enableBBCodeHelper("textarea[name='msg_text3']");
+	}
 }).on('click', '.outerFlex', function (e) {
     if (choosingAnime && $(e.target).hasClass("outerFlex")) {
         cancelSearch();

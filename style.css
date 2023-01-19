@@ -258,7 +258,7 @@ table#dialog textarea[name="msg_text"]{
 }
 
 a.helptoggle {
-	color: white !important:
+	color: white !important;
 }
 
 .flexContainer, .flexContainerHistory {

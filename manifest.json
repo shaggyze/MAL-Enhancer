@@ -4,7 +4,7 @@
    "short_name": "MALENHC",
    "description": "Enhances MAL for a better user experience. Suggestions are welcome!",
    "update_url": "https://clients2.google.com/service/update2/crx",
-   "version": "3.2",
+   "version": "3.6.0",
    "manifest_version": 3,
    "host_permissions": [ "*://*.myanimelist.net/*" ],
    "permissions": [ "declarativeContent", "storage" ],
