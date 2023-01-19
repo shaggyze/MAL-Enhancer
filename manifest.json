@@ -3,7 +3,7 @@
    "name": "MAL Enhancer",
    "short_name": "MALENHC",
    "description": "Enhances MAL for a better user experience. Suggestions are welcome!",
-   "version": "3.5.8",
+   "version": "3.6.0",
    "manifest_version": 3,
    "host_permissions": [ "*://*.myanimelist.net/*" ],
    "permissions": [ "webRequest", "scripting", "tabs", "storage" ],

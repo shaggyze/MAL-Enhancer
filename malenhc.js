@@ -70,12 +70,8 @@ $(document).ready(function () {
     if (window.location.pathname == "/mymessages.php" && window.location.search.contains("go=send")) {
         console.info("[MAL Enhancer] Writing a message. Enabeling BBCode helper");
 		$("textarea").each(function () {
-	      textIndex += 2;
+	      textIndex += 3;
 	      if (!$(this).attr("name")) {$(this).attr("name", "msg_text" + textIndex);}
-        });
-        enableAnimeFinder("textarea[name='message']");
-        enableBBCodeHelper("textarea[name='message']", function () {
-            enableMessageBackup();
         });
         enableMessageBeautifier();
     } else if (window.location.pathname == "/mymessages.php" && !window.location.search.contains("go=read")) {
@@ -282,7 +278,13 @@ $(document).on('click', '.animeselected', function () {
 	  if (!$(this).attr("name")) {$(this).attr("name", "msg_text" + textIndex);}
     });
 	enableAnimeFinder("textarea[name='msg_text3']");
-    enableBBCodeHelper("textarea[name='msg_text3']");
+	  if (window.location.pathname == "/mymessages.php" && window.location.search.contains("go=send")) {
+	    enableBBCodeHelper("textarea[name='msg_text3']", function () {
+          enableMessageBackup();
+        });
+	} else {
+      enableBBCodeHelper("textarea[name='msg_text3']");
+	}
 }).on('click', '.outerFlex', function (e) {
     if (choosingAnime && $(e.target).hasClass("outerFlex")) {
         cancelSearch();
