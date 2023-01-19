@@ -317,9 +317,9 @@ function removeTags(htmlData){
         if(debugParsing){console.log(htmlData)};
         
         var w = window.open('', "", "scrollbars=yes,width=680,height=320");
-        $(document.head).append("<title>EXTRACTING RESULT ~ MAL ENHANCER ~</title><style>body{padding:5px;}</style>");
-        $(document.body).append("<h1>Extracting result:</h1>");
-        $(document.body).append("<textarea rows='15' cols='90'>"+htmlData+"</textarea>");
+        $(w.document.head).append("<title>EXTRACTING RESULT ~ MAL ENHANCER ~</title><style>body{padding:5px;}</style>");
+        $(w.document.body).append("<h1>Extracting result:</h1>");
+        $(w.document.body).append("<textarea rows='15' cols='90'>"+htmlData+"</textarea>");
     }
     
 }
