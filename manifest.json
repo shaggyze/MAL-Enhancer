@@ -8,13 +8,18 @@
    "manifest_version": 3,
    "host_permissions": [ "*://*.myanimelist.net/*" ],
    "permissions": [ "declarativeContent", "storage" ],
-   "background": { "service_worker": "background.js" },
    "content_scripts": [ {
       "css": [ "style.css", "gitgraph.css" ],
       "js": [ "jquery.js", "malenhc.js", "bbcodehelper.js", "bbcodeextracter.js", "gitgraph.min.js" ],
       "matches": [ "https://myanimelist.net/*" ],
 	  "run_at":    "document_start"
    } ],
+   "browser_specific_settings": {
+    "gecko": {
+     "id": "malenhancer@shaggyze.website",
+     "strict_min_version": "42.0"
+    }
+   }
    "icons": {
       "128": "logo128.png",
       "16": "logo16.png",
