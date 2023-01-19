@@ -216,7 +216,12 @@ function removeTags(htmlData){
 			if(!workWith.attr("style") === "undefined"){
 				htmlData = htmlData.replaceAll(obj[0].outerHTML, "");
 				removeTags(htmlData);
-
+			}else if(workWith.attr("style").startsWith("margin:")){//margin
+			    htmlData = htmlData.replaceAll(obj[0].outerHTML, "");
+				removeTags(htmlData);
+			}else if(workWith.attr("style").startsWith("padding:")){//padding
+			    htmlData = htmlData.replaceAll(obj[0].outerHTML, "");
+				removeTags(htmlData);
             }else if(workWith.attr("style").endsWith("center;")){//Align center
                 var replaceWith = "[center]" + workWith.html() + "[/center]";
                 htmlData = htmlData.replaceAll(obj[0].outerHTML, replaceWith);
@@ -312,9 +317,9 @@ function removeTags(htmlData){
         if(debugParsing){console.log(htmlData)};
         
         var w = window.open('', "", "scrollbars=yes,width=680,height=320");
-        $(w.document.head).append("<title>EXTRACTING RESULT ~ MAL ENHANCER ~</title><style>body{padding:5px;}</style>");
-        $(w.document.body).append("<h1>Extracting result:</h1>");
-        $(w.document.body).append("<textarea rows='15' cols='90'>"+htmlData+"</textarea>");
+        $(document.head).append("<title>EXTRACTING RESULT ~ MAL ENHANCER ~</title><style>body{padding:5px;}</style>");
+        $(document.body).append("<h1>Extracting result:</h1>");
+        $(document.body).append("<textarea rows='15' cols='90'>"+htmlData+"</textarea>");
     }
     
 }

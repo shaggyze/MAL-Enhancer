@@ -13,21 +13,7 @@ String.prototype.capitalize = function () {
 String.prototype.contains = function (it) {
     return this.indexOf(it) != -1;
 };
-chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-    if (changeInfo.status === 'complete' && tab.url.match(/myanimelist.net/)) {
-        chrome.tabs.executeScript(tabId, {
-            code: 'document.querySelector(' + JSON.stringify(someSelector) + ')'
-        }, function(results) {
-            if (results[0]) {
-                chrome.pageAction.show(tabId);
-            } else {
-                chrome.pageAction.hide(tabId);
-            }
-        });
-    } else {
-        chrome.pageAction.hide(tabId);
-    }
-});
+
 function delimitNumbers(str) {
     return (str + "").replace(/\b(\d+)((\.\d+)*)\b/g, function (a, b, c) {
         return (b.charAt(0) > 0 && !(c || ".").lastIndexOf(".") ? b.replace(/(\d)(?=(\d{3})+$)/g, "$1 ") : b) + c;
@@ -137,9 +123,9 @@ $(document).ready(function () {
         enableImprovedHistory();
 		enableBBCodeCom();
         //First decide if profile actually has content.
-		chrome.storage.sync.get("allbbcode", function (data) {
+		storage.sync.get("allbbcode", function (data) {
 		if (data.allbbcode == "true" || data.allbbcode == undefined) {
-		chrome.storage.sync.get("profilebbcode", function (data) {
+		storage.sync.get("profilebbcode", function (data) {
 		  if (data.profilebbcode == "true" || data.profilebbcode == undefined) {
             if ($(".word-break").html() !== undefined) {
 			  console.info("[MAL Enhancer] Looking at a profile page! Enabeling BBCode Extractor.");
@@ -168,7 +154,7 @@ $(document).ready(function () {
 		currentAnimelist = user;
 		rouletteType = "manga";
         //if (animelistLayoutIsOld == false) {
-        chrome.storage.sync.get("animeRoulette", function (data) {
+        storage.sync.get("animeRoulette", function (data) {
             if (data.animeRoulette == "true" || data.animeRoulette == undefined) {
 
                 downloadAllAnimeData(user);
@@ -186,7 +172,7 @@ $(document).ready(function () {
         currentAnimelist = user;
 		rouletteType = "anime";
         //if (animelistLayoutIsOld == false) {
-        chrome.storage.sync.get("animeRoulette", function (data) {
+        storage.sync.get("animeRoulette", function (data) {
             if (data.animeRoulette == "true" || data.animeRoulette == undefined) {
 
                 downloadAllAnimeData(user);
@@ -257,7 +243,7 @@ NodeList.prototype.remove = HTMLCollection.prototype.remove = function () {
 }
 if (window.location.pathname.startsWith("/animelist/") || window.location.pathname.startsWith("/mangalist/")) {
     var user = window.location.pathname.substr(11).split("?")[0].trim();
-    chrome.storage.sync.get(null, function (data) {
+    storage.sync.get(null, function (data) {
         if (data.customCSS == "false" || $.inArray(user, data.blacklisted) != -1) {
 			if ($.inArray(user, data.blacklisted) != -1) {
 				console.info("[MAL Enhancer] " + user + " is blacklisted.")
@@ -1033,7 +1019,7 @@ function randomIntFromInterval(min, max) {
 
 //BBCode Helper
 function enableBBCodeHelper(textboxSelector, callback) {
-    chrome.storage.sync.get("bbcodehelper", function (data) {
+    storage.sync.get("bbcodehelper", function (data) {
         if (data.bbcodehelper == "true" || data.bbcodehelper == undefined) {
             if (!bbcodehelper) {
 
@@ -1079,7 +1065,7 @@ function enableBBCodeHelper(textboxSelector, callback) {
 //Animefinder helper
 
 function enableAnimeFinder(textboxSelector) {
-    chrome.storage.sync.get("animefinder", function (data) {
+    storage.sync.get("animefinder", function (data) {
         if (data.animefinder == "true" || data.animefinder == undefined) {
             if (!animefinder) {
                 $("body").append("<div class='flexContainer' style='display:none;'><div class='outerFlex'><div class='innerFlex noselect'><a class='helptoggle' onclick='$(\"#animesearchhelper\").stop().slideToggle();'>Help</a><p>Search results for: <span id='flexSearchFor'></span></p><br><div id='animesearchhelper'><p>Use <b>up/down arrows</b> or <b>the mouse</b> to select an anime.</p><br><p>Confirm selection by pressing <b>enter</b> or <b>clicking</b></p><br><p>Tips: <br>- Hold <b>CTRL</b> when confirming your selection to insert a link to the anime<br>- Pressing <b>CTRL + ENTER</b> while writing a message, you can search directly for the word you're typing!<p></div><i class='fa fa-refresh spin animeLoadSpinner' aria-hidden='true' class='animeLoadSpinner spin noselect'></i><table><thead><tr><th>Picture</th><th>Name</th><th>Type</th><th>Released</th></tr></thead><tbody id='searchTable'></tbody></table></div></div></div>");
@@ -1241,7 +1227,7 @@ function replaceWord(word, _cursorPos, replaceWith) {
 var createdGraph = false;
 var graph = null;
 function enableImprovedHistory() {
-    chrome.storage.sync.get("improvedhistory", function (data) {
+    storage.sync.get("improvedhistory", function (data) {
         if (data.improvedhistory == "true" || data.improvedhistory == undefined) {
             console.info("[MAL Enhancer] Improved History enabled!");
             //$(".stats.anime").find("h5").wrapInner('<p style="display: inline;"></p>');
@@ -1345,9 +1331,9 @@ var knownNames = [];
 var changes = false;
 
 function enableBBCodeClub() {
-		chrome.storage.sync.get("allbbcode", function (data) {
+		storage.sync.get("allbbcode", function (data) {
 		if (data.allbbcode == "true" || data.allbbcode == undefined) {
-		chrome.storage.sync.get("clubbbcode", function (data) {
+		storage.sync.get("clubbbcode", function (data) {
 		  if (data.clubbbcode == "true" || data.clubbbcode == undefined) {
 		    $("#content > table > tbody > tr > td.borderClass > div > div.clearfix").after("<button class='MAL-ENCH-BBCODECLUB'>Extract description to BBCode</button>");
 	      } else {
@@ -1360,9 +1346,9 @@ function enableBBCodeClub() {
 		});
 }
 function enableBBCodeSig() {
-		chrome.storage.sync.get("allbbcode", function (data) {
+		storage.sync.get("allbbcode", function (data) {
 		if (data.allbbcode == "true" || data.allbbcode == undefined) {
-		chrome.storage.sync.get("sigbbcode", function (data) {
+		storage.sync.get("sigbbcode", function (data) {
 		  if (data.sigbbcode == "true" || data.sigbbcode == undefined) {
 		    $(".page-forum .sig-container").css("max-height", "300px");
 			$(".page-forum .sig").after("<button class='MAL-ENCH-BBCODESIG'>Extract signature to BBCode</button>");
@@ -1376,9 +1362,9 @@ function enableBBCodeSig() {
 		});
 }
 function enableBBCodePost() {
-		chrome.storage.sync.get("allbbcode", function (data) {
+		storage.sync.get("allbbcode", function (data) {
 		if (data.allbbcode == "true" || data.allbbcode == undefined) {
-		chrome.storage.sync.get("postbbcode", function (data) {
+		storage.sync.get("postbbcode", function (data) {
 		  if (data.postbbcode == "true" || data.postbbcode == undefined) {
 			$(".page-forum .message-text").after("<button class='MAL-ENCH-BBCODEPOST'>Extract post to BBCode</button>");
 	      } else {
@@ -1391,9 +1377,9 @@ function enableBBCodePost() {
 		});
 }
 function enableBBCodeBlog() {
-		chrome.storage.sync.get("allbbcode", function (data) {
+		storage.sync.get("allbbcode", function (data) {
 		if (data.allbbcode == "true" || data.allbbcode == undefined) {
-		chrome.storage.sync.get("blogbbcode", function (data) {
+		storage.sync.get("blogbbcode", function (data) {
 		  if (data.blogbbcode == "true" || data.blogbbcode == undefined) {
 		    $("div").each(function () {
 				//$(this).addClass("blog_text");
@@ -1410,9 +1396,9 @@ function enableBBCodeBlog() {
 		});
 }
 function enableBBCodeCom() {
-		chrome.storage.sync.get("allbbcode", function (data) {
+		storage.sync.get("allbbcode", function (data) {
 		if (data.allbbcode == "true" || data.allbbcode == undefined) {
-		chrome.storage.sync.get("commentbbcode", function (data) {
+		storage.sync.get("commentbbcode", function (data) {
 		  if (data.commentbbcode == "true" || data.commentbbcode == undefined) {
 		    $(".comment-text").append("<br><button class='MAL-ENCH-BBCODECOM'>Extract comment to BBCode</button>");
 	      } else {
@@ -1425,9 +1411,9 @@ function enableBBCodeCom() {
 		});
 }
 function enableBBCodeCom2() {
-		chrome.storage.sync.get("allbbcode", function (data) {
+		storage.sync.get("allbbcode", function (data) {
 		if (data.allbbcode == "true" || data.allbbcode == undefined) {
-		chrome.storage.sync.get("commentbbcode", function (data) {
+		storage.sync.get("commentbbcode", function (data) {
 		  if (data.commentbbcode == "true" || data.commentbbcode == undefined) {
 		    $(".spaceit").append("<br><button class='MAL-ENCH-BBCODECOM2'>Extract comment to BBCode</button>");
 	      } else {
@@ -1440,9 +1426,9 @@ function enableBBCodeCom2() {
 		});
 }
 function enableBBCodeCom3() {
-		chrome.storage.sync.get("allbbcode", function (data) {
+		storage.sync.get("allbbcode", function (data) {
 		if (data.allbbcode == "true" || data.allbbcode == undefined) {
-		chrome.storage.sync.get("commentbbcode", function (data) {
+		storage.sync.get("commentbbcode", function (data) {
 		  if (data.commentbbcode == "true" || data.commentbbcode == undefined) {
 		    $("div[id^=comment] td:nth-of-type(2)").append("<br><button class='MAL-ENCH-BBCODECOM3'>Extract comment to BBCode</button>");
 	      } else {
@@ -1455,9 +1441,9 @@ function enableBBCodeCom3() {
 		});
 }
 function enableBBCodeHapser() {
-		chrome.storage.sync.get("allbbcode", function (data) {
+		storage.sync.get("allbbcode", function (data) {
 		if (data.allbbcode == "true" || data.allbbcode == undefined) {
-		chrome.storage.sync.get("pmbbcode", function (data) {
+		storage.sync.get("pmbbcode", function (data) {
 		  if (data.pmbbcode == "true" || data.pmbbcode == undefined) {
 		    $(".dialog-text > .lightLink").after("<button class='MAL-ENCH-BBCODEHAPSER'>Extract message to BBCode</button>");
 	      } else {
@@ -1526,7 +1512,7 @@ function saveMessageBackup() {
 }
 
 function showStoredMessages() {
-    chrome.storage.sync.get("messageDrafts", function (data) {
+    storage.sync.get("messageDrafts", function (data) {
         if (data.messageDrafts == "true" || data.messageDrafts == undefined) {
             var currentData = getMessageBackup();
             var size = Object.getSize(currentData);
@@ -1582,7 +1568,7 @@ function showStoredMessages() {
 }
 
 function enableMessageBackup() {
-    chrome.storage.sync.get("messageDrafts", function (data) {
+    storage.sync.get("messageDrafts", function (data) {
         if (data.messageDrafts == "true" || data.messageDrafts == undefined) {
             $(".dialog-text h2").append("<p class='MAL-ENCH-messagebackup'><i class='fa fa-spinner spin' aria-hidden='true'></i> Loading Data</p>");
             var currentData = getMessageBackup();
@@ -1614,7 +1600,7 @@ function enableMessageBackup() {
 
 
 function enableMessageBeautifier() {
-    chrome.storage.sync.get("messageBeautifier", function (data) {
+    storage.sync.get("messageBeautifier", function (data) {
         if (data.messageBeautifier == "true" || data.messageBeautifier == undefined) {
             messagesTable = $("#dialog").next().find("table");
 
@@ -1709,7 +1695,7 @@ function enableMessageBeautifier() {
             });
 
 
-            chrome.storage.sync.get("knownPBUrls", function (data) {
+            storage.sync.get("knownPBUrls", function (data) {
                 knownNames = data.knownPBUrls;
                 if (knownNames === undefined) {
                     knownNames = {};
@@ -1721,7 +1707,7 @@ function enableMessageBeautifier() {
                     if (changes) {
                         console.log("SAVING KNOWNNAMES!!");
                         console.log(knownNames);
-                        chrome.storage.sync.set({
+                        storage.sync.set({
                             "knownPBUrls": knownNames
                         }, function () {
                             console.log("Successfully updated profile url to img translation database.");
@@ -1755,13 +1741,13 @@ function insertName(name, knownNames) {
 }
 
 function getAllStorage() {
-    chrome.storage.sync.get(function (data) {
+    storage.sync.get(function (data) {
         console.log(data);
     });
 }
 
 function resetKnownNames() {
-    chrome.storage.sync.set({
+    storage.sync.set({
         "knownPBUrls": {}
     }, function () {
         console.log("Reset all known names.");
@@ -1770,7 +1756,7 @@ function resetKnownNames() {
 }
 
 function delterms() {
-  chrome.storage.sync.get("terms", function (data) {
+  storage.sync.get("terms", function (data) {
     if (data.terms == "true" || data.terms == undefined) {
 		console.info("[MAL Enhancer] Disable Privacy Policy enabled!");
 		if (!document.cookie.match(new RegExp("(^| )m_gdpr_mdl_6=1([^;]+)"))); {
@@ -1799,7 +1785,7 @@ function delterms() {
 }
 
 function delfooter() {
-  chrome.storage.sync.get("footer", function (data) {
+  storage.sync.get("footer", function (data) {
 	if (data.footer == "true" || data.footer == undefined) {
 		console.info("[MAL Enhancer] Disable Footer enabled!");
 		let footer = document.getElementById("footer-block");

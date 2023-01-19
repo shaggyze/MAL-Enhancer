@@ -3,10 +3,10 @@
    "name": "MAL Enhancer",
    "short_name": "MALENHC",
    "description": "Enhances MAL for a better user experience. Suggestions are welcome!",
-   "version": "3.2",
+   "version": "3.5.1",
    "manifest_version": 3,
    "host_permissions": [ "*://*.myanimelist.net/*" ],
-   "permissions": [ "webRequest", "storage" ],
+   "permissions": [ "webRequest", "scripting", "storage" ],
    "content_scripts": [ {
       "css": [ "style.css", "gitgraph.css" ],
       "js": [ "jquery.js", "malenhc.js", "bbcodehelper.js", "bbcodeextracter.js", "gitgraph.min.js" ],
