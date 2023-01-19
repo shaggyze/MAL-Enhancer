@@ -13,7 +13,21 @@ String.prototype.capitalize = function () {
 String.prototype.contains = function (it) {
     return this.indexOf(it) != -1;
 };
-
+chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
+    if (changeInfo.status === 'complete' && tab.url.match(/myanimelist.net/)) {
+        chrome.tabs.executeScript(tabId, {
+            code: 'document.querySelector(' + JSON.stringify(someSelector) + ')'
+        }, function(results) {
+            if (results[0]) {
+                chrome.pageAction.show(tabId);
+            } else {
+                chrome.pageAction.hide(tabId);
+            }
+        });
+    } else {
+        chrome.pageAction.hide(tabId);
+    }
+});
 function delimitNumbers(str) {
     return (str + "").replace(/\b(\d+)((\.\d+)*)\b/g, function (a, b, c) {
         return (b.charAt(0) > 0 && !(c || ".").lastIndexOf(".") ? b.replace(/(\d)(?=(\d{3})+$)/g, "$1 ") : b) + c;
